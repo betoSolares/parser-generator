@@ -59,6 +59,7 @@
             this.chooser_btn.TabIndex = 1;
             this.chooser_btn.Text = "Browse";
             this.chooser_btn.UseVisualStyleBackColor = false;
+            this.chooser_btn.Click += new System.EventHandler(this.ChooseFile);
             // 
             // file_path
             // 
