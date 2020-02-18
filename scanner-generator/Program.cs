@@ -13,7 +13,7 @@ namespace scanner_generator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run();
+            Application.Run(new UI.View());
         }
     }
 }
