@@ -66,5 +66,29 @@ namespace scanner_generator.Regex
             }
             return tokens;
         }
+
+        /// <summary>Check if the interval is two numbers</summary>
+        /// <param name="token">The token to check</param>
+        /// <returns>True if are numbers</returns>
+        private bool DigitInterval(string token)
+        {
+            return char.IsDigit(token[1]) && char.IsDigit(token[3]);
+        }
+
+        /// <summary>Check if the interval is two upper case letters</summary>
+        /// <param name="token">The token to check</param>
+        /// <returns>True if are two upper case letters</returns>
+        private bool UpperInterval(string token)
+        {
+            return char.IsUpper(token[1]) && char.IsUpper(token[3]);
+        }
+
+        /// <summary>Check if the interval is two lower case letters</summary>
+        /// <param name="token">The token to check</param>
+        /// <returns>True if are two lower case letters</returns>
+        private bool LowerInterval(string token)
+        {
+            return char.IsLower(token[1]) && char.IsLower(token[3]);
+        }
     }
 }
