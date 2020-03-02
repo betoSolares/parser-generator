@@ -1,8 +1,7 @@
-﻿using Regex;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace scanner_generator.Regex
+namespace Regex
 {
     class Helpers
     {
@@ -11,7 +10,7 @@ namespace scanner_generator.Regex
         /// <param name="lastOperator">The operator to compare</param>
         /// <param name="operators">The list of operators</param>
         /// <returns>True if the token precedence is less or equals than the operator precedence</returns>
-        private bool CheckPrecedence(string token, string lastOperator, List<string> operators)
+        public bool CheckPrecedence(string token, string lastOperator, List<string> operators)
         {
             int operatorIndex = operators.FindIndex(x => x.Equals(lastOperator));
             int tokenIndex = operators.FindIndex(x => x.Equals(token));
