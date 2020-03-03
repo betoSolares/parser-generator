@@ -95,7 +95,7 @@
             this.message.AutoSize = true;
             this.message.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.message.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.message.Location = new System.Drawing.Point(53, 155);
+            this.message.Location = new System.Drawing.Point(12, 157);
             this.message.Name = "message";
             this.message.Size = new System.Drawing.Size(67, 20);
             this.message.TabIndex = 6;

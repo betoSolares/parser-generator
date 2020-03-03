@@ -16,6 +16,24 @@ namespace RegularExpression
             CreateTree(regex);
         }
 
+        //TODO: Find an efficient way to evaluate the text using the tree.
+        /// <summary>Check if the text follows the rules by the regex</summary>
+        /// <param name="text">The text to evaluate</param>
+        /// <returns>True if the text is correct, otherwise false</returns>
+        public bool Evaluate(string text)
+        {
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^(((SETS)((\t|\s)*(\n))+((\t|\s)*[A-Z]+(\t|\s)*=(\t|\s)*((('.')|(CHR\([0-9]+\)))((\.\.)(('.')|(CHR\([0-9]+\))))?(\+(('.')|(CHR\([0-9]+\)))((\.\.)(('.')|(CHR\([0-9]+\))))?)*)((\t|\s)*(\n))+)+)?)((\n)*(TOKENS)((\t|\s)*(\n))+((\t|\s)*(TOKEN)(\t|\s)+[0-9]+(\t|\s)*=(\t|\s)*(\s|\*|\+|\?|\(|\)|\||'.'|[A-Z]+|{|})+((\t|\s)*(\n))+)+)((\n)*(ACTIONS)((\t|\s)*(\n))+((\t|\s)*(RESERVADAS\(\))((\t|\s)*(\n))+{((\t|\s)*(\n))+((\t|\s)*[0-9]+(\t|\s)*=(\t|\s)*'[A-Z]+'((\t|\s)*(\n))+)+}((\t|\s)*(\n))+)((\t|\s)*[A-Z]+\(\)((\t|\s)*(\n))+{((\t|\s)*(\n))+((\t|\s)*[0-9]+(\t|\s)*=(\t|\s)*'[A-Z]+'((\t|\s)*(\n))+)+}((\t|\s)*(\n))+)*)((([A-Z]*ERROR(\t|\s)*=(\t|\s)*[0-9]+)((\n[A-Z]*ERROR(\t|\s)*=(\t|\s)*[0-9]+)*)))");
+            System.Text.RegularExpressions.Match match = regex.Match(text);
+            if (match.Success)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>Creates the abstract syntax tree for the analysis</summary>
         /// <param name="regex">The regular expression for the tree</param>
         private void CreateTree(string regex)
