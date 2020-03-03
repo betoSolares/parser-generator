@@ -32,6 +32,7 @@
             this.chooser_btn = new System.Windows.Forms.Button();
             this.file_path = new System.Windows.Forms.TextBox();
             this.analyze_btn = new System.Windows.Forms.Button();
+            this.message = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -87,13 +88,27 @@
             this.analyze_btn.TabIndex = 3;
             this.analyze_btn.Text = "Analyze";
             this.analyze_btn.UseVisualStyleBackColor = false;
+            this.analyze_btn.Click += new System.EventHandler(this.AnalyzeText);
+            // 
+            // message
+            // 
+            this.message.AutoSize = true;
+            this.message.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.message.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.message.Location = new System.Drawing.Point(53, 155);
+            this.message.Name = "message";
+            this.message.Size = new System.Drawing.Size(67, 20);
+            this.message.TabIndex = 6;
+            this.message.Text = "Message";
+            this.message.Visible = false;
             // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(357, 103);
+            this.ClientSize = new System.Drawing.Size(357, 242);
+            this.Controls.Add(this.message);
             this.Controls.Add(this.analyze_btn);
             this.Controls.Add(this.file_path);
             this.Controls.Add(this.chooser_btn);
@@ -113,5 +128,6 @@
         private System.Windows.Forms.Button chooser_btn;
         private System.Windows.Forms.TextBox file_path;
         private System.Windows.Forms.Button analyze_btn;
+        private System.Windows.Forms.Label message;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace scanner_generator.UI
@@ -25,6 +27,23 @@ namespace scanner_generator.UI
                 file_path.Text = dialog.FileName;
             }
             dialog.Dispose();
+        }
+
+        /// <summary>Analize the file that was choosen.</summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Object that is being handled</param>
+        private void AnalyzeText(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] text = File.ReadAllLines(file_path.Text);
+            }
+            catch (Exception ex)
+            {
+                message.ForeColor = Color.Maroon;
+                message.Text = ex.Message;
+                message.Visible = true;
+            }
         }
     }
 }
