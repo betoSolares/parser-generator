@@ -49,6 +49,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regex\BadExpressionException.cs" />
+    <Compile Include="Regex\Element.cs" />
     <Compile Include="Regex\Helpers.cs" />
     <Compile Include="Regex\Node.cs" />
     <Compile Include="Regex\Regex.cs" />
