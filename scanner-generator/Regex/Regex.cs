@@ -59,11 +59,13 @@ namespace Regex
                             }
                             else
                             {
-                                Node temp = new Node(T.Pop())
-                                {
-                                    RightChild = S.Pop(),
-                                    LeftChild = S.Pop()
-                                };
+                                Node temp = new Node(T.Pop());
+                                Node rightChild = S.Pop();
+                                rightChild.Parent = temp;
+                                temp.RightChild = rightChild;
+                                Node leftChild = S.Pop();
+                                leftChild.Parent = temp;
+                                temp.LeftChild = leftChild;
                                 S.Push(temp);
                             }
                         }
@@ -80,7 +82,9 @@ namespace Regex
                             }
                             else
                             {
-                                temp.LeftChild = S.Pop();
+                                Node leftChild = S.Pop();
+                                leftChild.Parent = temp;
+                                temp.LeftChild = leftChild;
                                 S.Push(temp);
                             }
                         }
@@ -88,11 +92,13 @@ namespace Regex
                         {
                             if (S.Count >= 2)
                             {
-                                Node temp = new Node(T.Pop())
-                                {
-                                    RightChild = S.Pop(),
-                                    LeftChild = S.Pop()
-                                };
+                                Node temp = new Node(T.Pop());
+                                Node rightChild = S.Pop();
+                                rightChild.Parent = temp;
+                                temp.RightChild = rightChild;
+                                Node leftChild = S.Pop();
+                                leftChild.Parent = temp;
+                                temp.LeftChild = leftChild;
                                 S.Push(temp);
                             }
                             else
@@ -116,11 +122,13 @@ namespace Regex
                 {
                     if (!T.Peek().Equals("(") && S.Count >= 2)
                     {
-                        Node temp = new Node(T.Pop())
-                        {
-                            RightChild = S.Pop(),
-                            LeftChild = S.Pop()
-                        };
+                        Node temp = new Node(T.Pop());
+                        Node rightChild = S.Pop();
+                        rightChild.Parent = temp;
+                        temp.RightChild = rightChild;
+                        Node leftChild = S.Pop();
+                        leftChild.Parent = temp;
+                        temp.LeftChild = leftChild;
                         S.Push(temp);
                     }
                     else
