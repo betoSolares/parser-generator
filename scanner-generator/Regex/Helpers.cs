@@ -78,6 +78,22 @@ namespace Regex
             return tokens;
         }
 
+        /// <summary>Tokenize the text to evaluate</summary>
+        /// <param name="text">The text to evaluate</param>
+        /// <returns>A queue with all of the elements of the text</returns>
+        public Queue<Element> TokenizeText(string[] text)
+        {
+            Queue<Element> tokens = new Queue<Element>();
+            for(int i = 0; i < text.Length; i++)
+            {
+                for(int j = 0; j < text[i].Length; j++)
+                {
+                    tokens.Enqueue(new Element(text[i][j], j+1, i+1));
+                }
+            }
+            return tokens;
+        }
+
         /// <summary>Check if the interval is two numbers</summary>
         /// <param name="token">The token to check</param>
         /// <returns>True if are numbers</returns>
