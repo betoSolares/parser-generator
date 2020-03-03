@@ -46,10 +46,10 @@ namespace scanner_generator.UI
                 {
                     Regex regex = new Regex(@"^·(" + SETS + ")·(" + TOKENS + ")·(" + ACTIONS + ")·(" + ERRORS + ")·$");
                 }
-                catch (BadExpressionException)
+                catch (BadExpressionException ex)
                 {
                     message.ForeColor = Color.Maroon;
-                    message.Text = "The regular expression has some errors";
+                    message.Text = "The regular expression has some errors: " + ex.Message;
                     message.Visible = true;
                 }
             }
