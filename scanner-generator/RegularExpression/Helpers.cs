@@ -81,17 +81,26 @@ namespace RegularExpression
         /// <summary>Tokenize the text to evaluate</summary>
         /// <param name="text">The text to evaluate</param>
         /// <returns>A queue with all of the elements of the text</returns>
-        public Queue<Element> TokenizeText(string[] text)
+        public Queue<Element> TokenizeText(string text)
         {
-            Queue<Element> tokens = new Queue<Element>();
-            for(int i = 0; i < text.Length; i++)
+            Queue<Element> elements = new Queue<Element>();
+            text = text.Replace(Environment.NewLine, "\n");
+            int row = 1;
+            int column = 1;
+            foreach(char character in text)
             {
-                for(int j = 0; j < text[i].Length; j++)
+                elements.Enqueue(new Element(character, column, row));
+                if (character.Equals('\n'))
                 {
-                    tokens.Enqueue(new Element(text[i][j], j+1, i+1));
+                    row++;
+                    column = 1;
+                }
+                else
+                {
+                    column++;
                 }
             }
-            return tokens;
+            return elements;
         }
 
         /// <summary>Check if the interval is two numbers</summary>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RegularExpression;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -36,7 +38,7 @@ namespace scanner_generator.UI
         {
             try
             {
-                string[] text = File.ReadAllLines(file_path.Text);
+                string text = File.ReadAllText(file_path.Text);
             }
             catch (Exception ex)
             {
