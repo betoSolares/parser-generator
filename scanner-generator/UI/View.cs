@@ -105,5 +105,21 @@ namespace scanner_generator.UI
             }
             return result;
         }
+
+        /// <summary>Get all the elements under the SETS section</summary>
+        /// <param name="text">The text to parse</param>
+        /// <returns>A dictionary with all the SETS</returns>
+        private Dictionary<string, string> GetSets(string text)
+        {
+            if (text.Contains("SETS"))
+            {
+                int indexFrom = text.IndexOf("SETS") + "SETS".Length;
+                int indexTo = text.LastIndexOf("TOKENS");
+                string result = text.Substring(indexFrom, indexTo - indexFrom);
+                string[] sets = result.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                return MakeDictionary(sets);
+            }
+            return null;
+        }
     }
 }
