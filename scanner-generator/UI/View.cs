@@ -121,5 +121,24 @@ namespace scanner_generator.UI
             }
             return null;
         }
+
+        /// <summary>Delete the call functions from the TOKENS</summary>
+        /// <param name="dictionary">The original dictionary to normalize</param>
+        /// <returns>A new dictionary</returns>
+        private Dictionary<string, string> NormalizeDictionary(Dictionary<string, string> dictionary)
+        {
+            Dictionary<string, string> newDictionary = new Dictionary<string, string>(dictionary);
+            foreach(KeyValuePair<string, string> element in dictionary)
+            {
+                int indexFrom = element.Value.IndexOf("{");
+                int indexTo = element.Value.LastIndexOf("}");
+                if (indexFrom != -1 && indexTo != -1)
+                {
+                    string newValue = element.Value.Remove(indexFrom, indexTo - indexFrom + 1);
+                    newDictionary[element.Key] = newValue.Trim(new[] { '\t', ' ' });
+                }
+            }
+            return newDictionary;
+        }
     }
 }
