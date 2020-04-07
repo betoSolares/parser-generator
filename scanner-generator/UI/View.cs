@@ -41,12 +41,37 @@ namespace scanner_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void AnalyzeText(object sender, EventArgs e)
         {
+            // Read the file
+            string text = string.Empty;
             try
             {
-                string text = File.ReadAllText(file_path.Text);
+                text = File.ReadAllText(file_path.Text);
+            }
+            catch (Exception ex)
+            {
+                message.ForeColor = Color.Maroon;
+                message.Text = ex.Message;
+                message.Visible = true;
+            }
+
+            if (!text.Equals(string.Empty))
+            {
+                // Generate regex
+                Regex regex = null;
                 try
                 {
-                    Regex regex = new Regex(@"^·(" + SETS + ")·(" + TOKENS + ")·(" + ACTIONS + ")·(" + ERRORS + ")·$");
+                    regex = new Regex(@"^·(" + SETS + ")·(" + TOKENS + ")·(" + ACTIONS + ")·(" + ERRORS + ")·$");
+                }
+                catch (BadExpressionException ex)
+                {
+                    message.ForeColor = Color.Maroon;
+                    message.Text = "The regular expression has some errors: " + ex.Message;
+                    message.Visible = true;
+                }
+
+                if(regex != null)
+                {
+                    // Lexical analysis
                     if (regex.Evaluate(text))
                     {
                         message.ForeColor = Color.White;
@@ -60,18 +85,6 @@ namespace scanner_generator.UI
                         message.Visible = true;
                     }
                 }
-                catch (BadExpressionException ex)
-                {
-                    message.ForeColor = Color.Maroon;
-                    message.Text = "The regular expression has some errors: " + ex.Message;
-                    message.Visible = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                message.ForeColor = Color.Maroon;
-                message.Text = ex.Message;
-                message.Visible = true;
             }
         }
     }
