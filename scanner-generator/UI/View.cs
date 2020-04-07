@@ -1,5 +1,6 @@
 ﻿using RegularExpression;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -86,6 +87,23 @@ namespace scanner_generator.UI
                     }
                 }
             }
+        }
+
+        /// <summary>Transform an array into a dictionary</summary>
+        /// <param name="elements">The array to transform</param>
+        /// <returns>A new dictionary</returns>
+        private Dictionary<string, string> MakeDictionary(string[] elements)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (string element in elements)
+            {
+                if (!element.Equals(string.Empty))
+                {
+                    string[] parts = element.Split(new[] { '=' });
+                    result.Add(parts[0].Trim(new[] { '\t', ' ' }), parts[1].Trim(new[] { '\t', ' ' }));
+                }
+            }
+            return result;
         }
     }
 }
