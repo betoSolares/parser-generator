@@ -122,6 +122,18 @@ namespace scanner_generator.UI
             return null;
         }
 
+        /// <summary>Get all the elements under the TOKENS section</summary>
+        /// <param name="text">The text to parse</param>
+        /// <returns>A dictionary with all the TOKENS</returns>
+        private Dictionary<string, string> GetTokens(string text)
+        {
+            int indexFrom = text.IndexOf("TOKENS") + "TOKENS".Length;
+            int indexTo = text.LastIndexOf("ACTIONS");
+            string result = text.Substring(indexFrom, indexTo - indexFrom);
+            string[] tokens = result.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            return NormalizeDictionary(MakeDictionary(tokens));
+        }
+
         /// <summary>Delete the call functions from the TOKENS</summary>
         /// <param name="dictionary">The original dictionary to normalize</param>
         /// <returns>A new dictionary</returns>
