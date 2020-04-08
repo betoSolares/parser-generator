@@ -1,6 +1,6 @@
-﻿using RegularExpression;
+﻿using Helpers;
+using RegularExpression;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -15,6 +15,8 @@ namespace scanner_generator.UI
         private const string ACTIONS = @"(\n)*·(A·C·T·I·O·N·S)·((\t|\s)*·(\n))+·((\t|\s)*·(R·E·S·E·R·V·A·D·A·S·\(·\))·((\t|\s)*·(\n))+·{·((\t|\s)*·(\n))+·((\t|\s)*·[0-9]+·(\t|\s)*·=·(\t|\s)*·'·[A-Z]+·'·((\t|\s)*·(\n))+)+·}·((\t|\s)*·(\n))+)·((\t|\s)*·[A-Z]+·\(·\)·((\t|\s)*·(\n))+·{·((\t|\s)*·(\n))+·((\t|\s)*·[0-9]+·(\t|\s)*·=·(\t|\s)*·'·[A-Z]+·'·((\t|\s)*·(\n))+)+·}·((\t|\s)*·(\n))+)*";
         private const string ERRORS = @"([A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)·(((\n)·[A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)*)";
 
+        private readonly TextManipulation textManipulation = new TextManipulation();
+        private readonly Syntactic syntactic = new Syntactic();
         private string text = string.Empty;
 
         /// <summary>Constructor</summary>
@@ -81,7 +83,7 @@ namespace scanner_generator.UI
                         // Syntactic analysis
                         try
                         {
-                            if (SyntacticValidation(text))
+                            if (syntactic.Validate(text))
                             {
                                 message.ForeColor = Color.White;
                                 message.Text = "The text is OK";
@@ -115,85 +117,16 @@ namespace scanner_generator.UI
             }
         }
 
-        /// <summary>Validate that the text is syntactically correct</summary>
-        /// <param name="text">The text to validate</param>
-        /// <returns>True if the text is correct, otherwise false</returns>
-        private bool SyntacticValidation(string text)
-        {
-            Dictionary<string, string> sets = GetSets(text);
-            Dictionary<string, string> tokens = GetTokens(text);
-            bool valid = true;
-            foreach (KeyValuePair<string, string> token in tokens)
-            {
-                string[] element = token.Value.Split(' ');
-                foreach (string part in element)
-                {
-                    List<string> opertors = new List<string>
-                    {
-                        "(",
-                        ")",
-                        "*",
-                        "+",
-                        "?",
-                        "·",
-                        "|"
-                    };
-                    if (!string.IsNullOrWhiteSpace(part) && !string.IsNullOrEmpty(part))
-                    {
-                        if (part.Length > 1)
-                        {
-                            string evaluatedText = part;
-                            int cont = 0;
-                            while (cont < part.Length)
-                            {
-                                if (evaluatedText.Length >= 3 && evaluatedText[0].ToString().Equals("'") && evaluatedText[2].ToString().Equals("'"))
-                                {
-                                    evaluatedText = evaluatedText.Remove(0, 3);
-                                    cont += 3;
-                                }
-                                else if (opertors.Contains(evaluatedText[0].ToString()))
-                                {
-                                    evaluatedText = evaluatedText.Remove(0, 1);
-                                    cont += 1;
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        if (!sets.ContainsKey(evaluatedText))
-                                        {
-                                            valid = false;
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        valid = false;
-                                    }
-                                    cont = evaluatedText.Length;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!opertors.Contains(part))
-                            {
-                                valid = false;
-                            }
-                        }
-                    }
-                }
-            }
-            return valid;
-        }
-
         /// <summary>Change to the state machine view</summary>
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">Object that is being handled</param>
         private void ChangeView(object sender, EventArgs e)
         {
             Hide();
-            MachineView machineView = new MachineView(GetTokens(text));
-            machineView.ShowDialog();
+            using (MachineView machineView = new MachineView(textManipulation.GetTokens(text)))
+            {
+                machineView.ShowDialog();
+            }
             Close();
         }
     }
