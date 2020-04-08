@@ -238,5 +238,16 @@ namespace scanner_generator.UI
             }
             return valid;
         }
+
+        /// <summary>Change to the state machine view</summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Object that is being handled</param>
+        private void ChangeView(object sender, EventArgs e)
+        {
+            Hide();
+            MachineView machineView = new MachineView();
+            machineView.ShowDialog();
+            Close();
+        }
     }
 }

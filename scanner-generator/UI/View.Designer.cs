@@ -121,6 +121,7 @@
             this.machine_btn.Text = "View State Machine";
             this.machine_btn.UseVisualStyleBackColor = false;
             this.machine_btn.Visible = false;
+            this.machine_btn.Click += new System.EventHandler(this.ChangeView);
             // 
             // View
             // 
