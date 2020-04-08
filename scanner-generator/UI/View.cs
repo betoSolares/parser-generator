@@ -99,7 +99,7 @@ namespace scanner_generator.UI
             {
                 if (!element.Equals(string.Empty))
                 {
-                    string[] parts = element.Split(new[] { '=' });
+                    string[] parts = element.Split(new[] { '=' }, 2);
                     result.Add(parts[0].Trim(new[] { '\t', ' ' }), parts[1].Trim(new[] { '\t', ' ' }));
                 }
             }
