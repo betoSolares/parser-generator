@@ -75,14 +75,33 @@ namespace scanner_generator.UI
                     // Lexical analysis
                     if (regex.Evaluate(text))
                     {
-                        message.ForeColor = Color.White;
-                        message.Text = "The text is correct";
-                        message.Visible = true;
+                        // Syntactic analysis
+                        try
+                        {
+                            if (SyntacticValidation(text))
+                            {
+                                message.ForeColor = Color.White;
+                                message.Text = "The text is OK";
+                                message.Visible = true;
+                            }
+                            else
+                            {
+                                message.ForeColor = Color.White;
+                                message.Text = "The text has some syntactic errors";
+                                message.Visible = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            message.ForeColor = Color.White;
+                            message.Text = "Check that there are no repeated tokens or sets: " + ex.Message;
+                            message.Visible = true;
+                        }
                     }
                     else
                     {
                         message.ForeColor = Color.White;
-                        message.Text = "The text has some errors";
+                        message.Text = "The text has some lexical errors";
                         message.Visible = true;
                     }
                 }
