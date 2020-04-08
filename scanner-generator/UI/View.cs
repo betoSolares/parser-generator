@@ -152,5 +152,66 @@ namespace scanner_generator.UI
             }
             return newDictionary;
         }
+
+        /// <summary>Validate that the text is syntactically correct</summary>
+        /// <param name="text">The text to validate</param>
+        /// <returns>True if the text is correct, otherwise false</returns>
+        private bool SyntacticValidation(string text)
+        {
+            Dictionary<string, string> sets = GetSets(text);
+            Dictionary<string, string> tokens = GetTokens(text);
+            bool valid = true;
+            foreach (KeyValuePair<string, string> token in tokens)
+            {
+                string[] element = token.Value.Split(' ');
+                foreach (string part in element)
+                {
+                    List<string> opertors = new List<string>
+                    {
+                        "(",
+                        ")",
+                        "*",
+                        "+",
+                        "?",
+                        "·",
+                        "|"
+                    };
+                    if (part.Length > 1)
+                    {
+                        string evaluatedText = part;
+                        int cont = 0;
+                        while (cont < part.Length)
+                        {
+                            if (evaluatedText.Length >= 3 && evaluatedText[0].ToString().Equals("'") && evaluatedText[2].ToString().Equals("'"))
+                            {
+                                evaluatedText = evaluatedText.Remove(0, 3);
+                                cont += 3;
+                            }
+                            else if (opertors.Contains(evaluatedText[0].ToString()))
+                            {
+                                evaluatedText = evaluatedText.Remove(0, 1);
+                                cont += 1;
+                            }
+                            else
+                            {
+                                if (!sets.ContainsKey(evaluatedText))
+                                {
+                                    valid = false;
+                                }
+                                cont = evaluatedText.Length;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!opertors.Contains(part))
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+            }
+            return valid;
+        }
     }
 }
