@@ -72,7 +72,45 @@ namespace RegularExpression
                 }
                 else
                 {
-                    tokens.Add(character.ToString());
+                    string token = character.ToString();
+                    int start = i;
+                    bool add = true;
+                    List<char> opertors = new List<char>
+                {
+                    '(',
+                    ')',
+                    '*',
+                    '+',
+                    '?',
+                    '·',
+                    '|',
+                    '^',
+                    '$'
+                };
+                    while (token.IndexOfAny(opertors.ToArray()) == -1)
+                    {
+                        i++;
+                        token += regex.Substring(i, 1);
+                    }
+
+                    if (token.Length == 2 && token[0].Equals('\'') && regex[i + 1].Equals('\''))
+                    {
+                        token += regex[i + 1];
+                        tokens.Add(token);
+                        add = false;
+                        i += 2;
+                    }
+
+                    if (i > start)
+                    {
+                        token = token.Remove(token.Length - 1, 1);
+                        i--;
+                    }
+
+                    if (add)
+                    {
+                        tokens.Add(token);
+                    }
                 }
             }
             return tokens;
