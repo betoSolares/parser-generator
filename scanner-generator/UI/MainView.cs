@@ -202,44 +202,47 @@ namespace scanner_generator.UI
                         "·",
                         "|"
                     };
-                    if (part.Length > 1)
+                    if (!string.IsNullOrWhiteSpace(part) && !string.IsNullOrEmpty(part))
                     {
-                        string evaluatedText = part;
-                        int cont = 0;
-                        while (cont < part.Length)
+                        if (part.Length > 1)
                         {
-                            if (evaluatedText.Length >= 3 && evaluatedText[0].ToString().Equals("'") && evaluatedText[2].ToString().Equals("'"))
+                            string evaluatedText = part;
+                            int cont = 0;
+                            while (cont < part.Length)
                             {
-                                evaluatedText = evaluatedText.Remove(0, 3);
-                                cont += 3;
-                            }
-                            else if (opertors.Contains(evaluatedText[0].ToString()))
-                            {
-                                evaluatedText = evaluatedText.Remove(0, 1);
-                                cont += 1;
-                            }
-                            else
-                            {
-                                try
+                                if (evaluatedText.Length >= 3 && evaluatedText[0].ToString().Equals("'") && evaluatedText[2].ToString().Equals("'"))
                                 {
-                                    if (!sets.ContainsKey(evaluatedText))
+                                    evaluatedText = evaluatedText.Remove(0, 3);
+                                    cont += 3;
+                                }
+                                else if (opertors.Contains(evaluatedText[0].ToString()))
+                                {
+                                    evaluatedText = evaluatedText.Remove(0, 1);
+                                    cont += 1;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        if (!sets.ContainsKey(evaluatedText))
+                                        {
+                                            valid = false;
+                                        }
+                                    }
+                                    catch
                                     {
                                         valid = false;
                                     }
+                                    cont = evaluatedText.Length;
                                 }
-                                catch
-                                {
-                                    valid = false;
-                                }
-                                cont = evaluatedText.Length;
                             }
                         }
-                    }
-                    else
-                    {
-                        if (!opertors.Contains(part))
+                        else
                         {
-                            valid = false;
+                            if (!opertors.Contains(part))
+                            {
+                                valid = false;
+                            }
                         }
                     }
                 }
