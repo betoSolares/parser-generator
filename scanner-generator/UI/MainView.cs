@@ -123,7 +123,7 @@ namespace scanner_generator.UI
             Dictionary<string, string> result = new Dictionary<string, string>();
             foreach (string element in elements)
             {
-                if (!element.Equals(string.Empty))
+                if (!element.Equals(string.Empty) && !string.IsNullOrWhiteSpace(element))
                 {
                     string[] parts = element.Split(new[] { '=' }, 2);
                     result.Add(parts[0].Trim(new[] { '\t', ' ' }), parts[1].Trim(new[] { '\t', ' ' }));
