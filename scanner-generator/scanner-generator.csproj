@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Expression.cs" />
     <Compile Include="Helpers\Syntactic.cs" />
     <Compile Include="Helpers\TextManipulation.cs" />
     <Compile Include="Program.cs" />
