@@ -50,7 +50,7 @@ namespace scanner_generator.UI
                             }
                             else if (opertors.Contains(evaluatedText[0].ToString()))
                             {
-                                if (regex[regex.Length - 1].Equals('·'))
+                                if (regex[regex.Length - 1].Equals('·') && !evaluatedText[0].Equals('('))
                                 {
                                     regex = regex.Remove(regex.Length - 1, 1);
                                 }
@@ -78,7 +78,7 @@ namespace scanner_generator.UI
                     {
                         if (opertors.Contains(part))
                         {
-                            if (regex[regex.Length - 1].Equals('·'))
+                            if (regex[regex.Length - 1].Equals('·') && !part.Equals("("))
                             {
                                 regex = regex.Remove(regex.Length - 1, 1);
                             }
