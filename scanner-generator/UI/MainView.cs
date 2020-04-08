@@ -220,7 +220,14 @@ namespace scanner_generator.UI
                             }
                             else
                             {
-                                if (!sets.ContainsKey(evaluatedText))
+                                try
+                                {
+                                    if (!sets.ContainsKey(evaluatedText))
+                                    {
+                                        valid = false;
+                                    }
+                                }
+                                catch
                                 {
                                     valid = false;
                                 }
