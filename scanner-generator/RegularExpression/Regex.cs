@@ -10,6 +10,7 @@ namespace RegularExpression
         public Node Tree { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
+        private readonly Utils utils = new Utils();
 
         /// <summary>Constructor</summary>
         /// <param name="regex">The regular expression to use</param>
@@ -109,7 +110,7 @@ namespace RegularExpression
                                 S.Push(temp);
                             }
                         }
-                        else if (T.Count > 0 && !T.Peek().Equals("(") && new Helpers().CheckPrecedence(token, T.Peek(), opertors))
+                        else if (T.Count > 0 && !T.Peek().Equals("(") && utils.CheckPrecedence(token, T.Peek(), opertors))
                         {
                             if (S.Count >= 2)
                             {
