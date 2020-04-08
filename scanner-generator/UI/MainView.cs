@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace scanner_generator.UI
 {
-    public partial class View : Form
+    public partial class MainView : Form
     {
         /// <summary>Parts of the regular expression</summary>
         private const string SETS = @"((S·E·T·S)·((\t|\s)*·(\n))+·((\t|\s)*·[A-Z]+·(\t|\s)*·=·(\t|\s)*·((('·.·')|(C·H·R·\(·[0-9]+·\)))·((\.·\.)·(('·.·')|(C·H·R·\(·[0-9]+·\))))?·(\+·(('·.·')|(C·H·R·\(·[0-9]+·\)))·((\.·\.)·(('·.·')|(C·H·R·\(·[0-9]+·\))))?)*)·((\t|\s)*·(\n))+)+)?";
@@ -16,7 +16,7 @@ namespace scanner_generator.UI
         private const string ERRORS = @"([A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)·(((\n)·[A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)*)";
 
         /// <summary>Constructor</summary>
-        public View()
+        public MainView()
         {
             InitializeComponent();
         }

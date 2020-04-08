@@ -1,6 +1,6 @@
 ﻿namespace scanner_generator.UI
 {
-    partial class View
+    partial class MainView
     {
         /// <summary>
         /// Required designer variable.
