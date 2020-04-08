@@ -53,6 +53,7 @@ namespace scanner_generator.UI
                 message.ForeColor = Color.Maroon;
                 message.Text = ex.Message;
                 message.Visible = true;
+                machine_btn.Visible = false;
             }
 
             if (!text.Equals(string.Empty))
@@ -68,6 +69,7 @@ namespace scanner_generator.UI
                     message.ForeColor = Color.Maroon;
                     message.Text = "The regular expression has some errors: " + ex.Message;
                     message.Visible = true;
+                    machine_btn.Visible = false;
                 }
 
                 if(regex != null)
@@ -83,12 +85,14 @@ namespace scanner_generator.UI
                                 message.ForeColor = Color.White;
                                 message.Text = "The text is OK";
                                 message.Visible = true;
+                                machine_btn.Visible = true;
                             }
                             else
                             {
                                 message.ForeColor = Color.White;
                                 message.Text = "The text has some syntactic errors";
                                 message.Visible = true;
+                                machine_btn.Visible = false;
                             }
                         }
                         catch (Exception ex)
@@ -96,6 +100,7 @@ namespace scanner_generator.UI
                             message.ForeColor = Color.White;
                             message.Text = "Check that there are no repeated tokens or sets: " + ex.Message;
                             message.Visible = true;
+                            machine_btn.Visible = false;
                         }
                     }
                     else
@@ -103,6 +108,7 @@ namespace scanner_generator.UI
                         message.ForeColor = Color.White;
                         message.Text = "The text has some lexical errors";
                         message.Visible = true;
+                        machine_btn.Visible = false;
                     }
                 }
             }

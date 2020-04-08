@@ -32,7 +32,8 @@
             this.chooser_btn = new System.Windows.Forms.Button();
             this.file_path = new System.Windows.Forms.TextBox();
             this.analyze_btn = new System.Windows.Forms.Button();
-            this.message = new System.Windows.Forms.Label();
+            this.message = new System.Windows.Forms.TextBox();
+            this.machine_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -92,15 +93,34 @@
             // 
             // message
             // 
-            this.message.AutoSize = true;
+            this.message.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.message.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.message.Cursor = System.Windows.Forms.Cursors.Default;
             this.message.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.message.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.message.Location = new System.Drawing.Point(12, 157);
+            this.message.Location = new System.Drawing.Point(12, 97);
+            this.message.Multiline = true;
             this.message.Name = "message";
-            this.message.Size = new System.Drawing.Size(67, 20);
-            this.message.TabIndex = 6;
-            this.message.Text = "Message";
+            this.message.ReadOnly = true;
+            this.message.Size = new System.Drawing.Size(333, 69);
+            this.message.TabIndex = 7;
             this.message.Visible = false;
+            // 
+            // machine_btn
+            // 
+            this.machine_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.machine_btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.machine_btn.FlatAppearance.BorderColor = System.Drawing.SystemColors.MenuText;
+            this.machine_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.machine_btn.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.machine_btn.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.machine_btn.Location = new System.Drawing.Point(102, 200);
+            this.machine_btn.Name = "machine_btn";
+            this.machine_btn.Size = new System.Drawing.Size(159, 30);
+            this.machine_btn.TabIndex = 8;
+            this.machine_btn.Text = "View State Machine";
+            this.machine_btn.UseVisualStyleBackColor = false;
+            this.machine_btn.Visible = false;
             // 
             // View
             // 
@@ -108,6 +128,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(357, 242);
+            this.Controls.Add(this.machine_btn);
             this.Controls.Add(this.message);
             this.Controls.Add(this.analyze_btn);
             this.Controls.Add(this.file_path);
@@ -128,6 +149,7 @@
         private System.Windows.Forms.Button chooser_btn;
         private System.Windows.Forms.TextBox file_path;
         private System.Windows.Forms.Button analyze_btn;
-        private System.Windows.Forms.Label message;
+        private System.Windows.Forms.TextBox message;
+        private System.Windows.Forms.Button machine_btn;
     }
 }
