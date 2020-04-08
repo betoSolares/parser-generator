@@ -18,6 +18,7 @@ namespace RegularExpression
         {
             Expression = regex;
             CreateTree(regex);
+            Tree = AddTerminal(Tree);
         }
 
         //TODO: Find an efficient way to evaluate the text using the tree.
@@ -36,6 +37,23 @@ namespace RegularExpression
             {
                 return false;
             }
+        }
+
+        /// <summary>Add the terminal node to the tree</summary>
+        /// <param name="node">The root node</param>
+        /// <returns>A new tree</returns>
+        private Node AddTerminal(Node node)
+        {
+            Node temp = new Node("·");
+            Node rightChild = new Node("#")
+            {
+                Parent = temp
+            };
+            temp.RightChild = rightChild;
+            Node leftChild = node;
+            leftChild.Parent = temp;
+            temp.LeftChild = leftChild;
+            return temp;
         }
 
         /// <summary>Creates the abstract syntax tree for the analysis</summary>
