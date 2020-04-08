@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace scanner_generator.UI
 {
     public partial class MachineView : Form
     {
-        public MachineView()
+        private readonly string regex = string.Empty;
+        
+        /// <summary>Constructor</summary>
+        /// <param name="tokens">The dictionary with the tokens</param>
+        public MachineView(Dictionary<string, string> tokens)
         {
             InitializeComponent();
         }

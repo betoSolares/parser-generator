@@ -15,6 +15,8 @@ namespace scanner_generator.UI
         private const string ACTIONS = @"(\n)*·(A·C·T·I·O·N·S)·((\t|\s)*·(\n))+·((\t|\s)*·(R·E·S·E·R·V·A·D·A·S·\(·\))·((\t|\s)*·(\n))+·{·((\t|\s)*·(\n))+·((\t|\s)*·[0-9]+·(\t|\s)*·=·(\t|\s)*·'·[A-Z]+·'·((\t|\s)*·(\n))+)+·}·((\t|\s)*·(\n))+)·((\t|\s)*·[A-Z]+·\(·\)·((\t|\s)*·(\n))+·{·((\t|\s)*·(\n))+·((\t|\s)*·[0-9]+·(\t|\s)*·=·(\t|\s)*·'·[A-Z]+·'·((\t|\s)*·(\n))+)+·}·((\t|\s)*·(\n))+)*";
         private const string ERRORS = @"([A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)·(((\n)·[A-Z]*·(E·R·R·O·R)·(\t|\s)*·=·(\t|\s)*·[0-9]+)*)";
 
+        private string text = string.Empty;
+
         /// <summary>Constructor</summary>
         public MainView()
         {
@@ -43,7 +45,6 @@ namespace scanner_generator.UI
         private void AnalyzeText(object sender, EventArgs e)
         {
             // Read the file
-            string text = string.Empty;
             try
             {
                 text = File.ReadAllText(file_path.Text);
@@ -245,7 +246,7 @@ namespace scanner_generator.UI
         private void ChangeView(object sender, EventArgs e)
         {
             Hide();
-            MachineView machineView = new MachineView();
+            MachineView machineView = new MachineView(GetTokens(text));
             machineView.ShowDialog();
             Close();
         }
