@@ -51,7 +51,7 @@
     <Compile Include="Helpers\TextManipulation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegularExpression\BadExpressionException.cs" />
+    <Compile Include="RegularExpression\Helpers\BadExpressionException.cs" />
     <Compile Include="RegularExpression\Helpers\Tokenizer.cs" />
     <Compile Include="RegularExpression\Helpers\Utils.cs" />
     <Compile Include="RegularExpression\Node.cs" />
