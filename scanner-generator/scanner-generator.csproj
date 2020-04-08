@@ -53,6 +53,12 @@
     <Compile Include="RegularExpression\Helpers.cs" />
     <Compile Include="RegularExpression\Node.cs" />
     <Compile Include="RegularExpression\Regex.cs" />
+    <Compile Include="UI\MachineView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MachineView.Designer.cs">
+      <DependentUpon>MachineView.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\View.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +74,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\MachineView.resx">
+      <DependentUpon>MachineView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\View.resx">
       <DependentUpon>View.cs</DependentUpon>
     </EmbeddedResource>

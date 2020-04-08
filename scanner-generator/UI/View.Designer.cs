@@ -138,7 +138,7 @@
             this.Name = "View";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Scanner Generator";
+            this.Text = "Main View";
             this.ResumeLayout(false);
             this.PerformLayout();
 
