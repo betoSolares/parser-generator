@@ -52,8 +52,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegularExpression\BadExpressionException.cs" />
-    <Compile Include="RegularExpression\Element.cs" />
-    <Compile Include="RegularExpression\Helpers.cs" />
+    <Compile Include="RegularExpression\Helpers\Tokenizer.cs" />
     <Compile Include="RegularExpression\Node.cs" />
     <Compile Include="RegularExpression\Regex.cs" />
     <Compile Include="UI\MachineView.cs">

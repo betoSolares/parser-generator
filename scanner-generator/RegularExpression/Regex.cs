@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 namespace RegularExpression
 {
-    class Regex
+    public class Regex
     {
+        /// <summary>Attributes of the class</summary>
         public string Expression { get; private set; }
         public Node Tree { get; private set; }
+
+        private readonly Tokenizer tokenizer = new Tokenizer();
 
         /// <summary>Constructor</summary>
         /// <param name="regex">The regular expression to use</param>
@@ -40,7 +43,7 @@ namespace RegularExpression
         {
             try
             {
-                List<string> tokens = new Helpers().TokenizeExpression(regex);
+                List<string> tokens = tokenizer.TokenizeExpression(regex);
                 List<string> opertors = new List<string>
                 {
                     "(",
