@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RegularExpression
 {
@@ -9,6 +10,7 @@ namespace RegularExpression
         public string Expression { get; private set; }
         public Node Tree { get; private set; }
         public Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>> FirstLastTable { get; private set; }
+        public Dictionary<Tuple<int, string>, List<int>> FollowsTable { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
@@ -23,6 +25,8 @@ namespace RegularExpression
             Tree = AddTerminal(Tree);
             FirstLastTable = new Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>>();
             CreateFirstlastsTable(Tree);
+            FollowsTable = utils.CreateDictionary(Tree);
+            CreateFollowsTable(Tree);
         }
 
         //TODO: Find an efficient way to evaluate the text using the tree.
@@ -57,6 +61,7 @@ namespace RegularExpression
             Node leftChild = node;
             leftChild.Parent = temp;
             temp.LeftChild = leftChild;
+            count += 2;
             return temp;
         }
 
@@ -295,6 +300,43 @@ namespace RegularExpression
                     Tuple<int, string> identifier = new Tuple<int, string>(node.Identifier, node.Value);
                     Tuple<List<int>[], bool> data = new Tuple<List<int>[], bool>(values, nullable);
                     FirstLastTable.Add(identifier, data);
+                }
+            }
+        }
+
+        /// <summary>Transverse the tree and create the follows table</summary>
+        /// <param name="node">The current node</param>
+        private void CreateFollowsTable(Node node)
+        {
+            if (node != null)
+            {
+                CreateFollowsTable(node.LeftChild);
+                CreateFollowsTable(node.RightChild);
+
+                if (node.LeftChild != null || node.RightChild != null)
+                {
+                    if (node.Value.Equals("·"))
+                    {
+                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier, node.LeftChild.Value);
+                        Tuple<List<int>[], bool> c1 = FirstLastTable[key];
+                        key = new Tuple<int, string>(node.RightChild.Identifier, node.RightChild.Value);
+                        Tuple<List<int>[], bool> c2 = FirstLastTable[key];
+                        foreach (int last in c1.Item1[1])
+                        {
+                            Tuple<int, string> insert = FollowsTable.FirstOrDefault(x => x.Key.Item1 == last).Key;
+                            FollowsTable[insert].AddRange(c2.Item1[0]);
+                        }
+                    }
+                    else if (node.Value.Equals("*") || node.Value.Equals("+"))
+                    {
+                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier, node.LeftChild.Value);
+                        Tuple<List<int>[], bool> c1 = FirstLastTable[key];
+                        foreach (int last in c1.Item1[1])
+                        {
+                            Tuple<int, string> insert = FollowsTable.FirstOrDefault(x => x.Key.Item1 == last).Key;
+                            FollowsTable[insert].AddRange(c1.Item1[0]);
+                        }
+                    }
                 }
             }
         }
