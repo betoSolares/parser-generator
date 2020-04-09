@@ -11,6 +11,7 @@ namespace RegularExpression
         public Node Tree { get; private set; }
         public Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>> FirstLastTable { get; private set; }
         public Dictionary<Tuple<int, string>, List<int>> FollowsTable { get; private set; }
+        public Dictionary<Tuple<string, List<int>>, Dictionary<string, List<int>>> Transitions { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
@@ -27,6 +28,8 @@ namespace RegularExpression
             CreateFirstlastsTable(Tree);
             FollowsTable = utils.CreateDictionary(Tree);
             CreateFollowsTable(Tree);
+            Transitions = new Dictionary<Tuple<string, List<int>>, Dictionary<string, List<int>>>();
+            CreateTransitions();
         }
 
         //TODO: Find an efficient way to evaluate the text using the tree.
@@ -338,6 +341,57 @@ namespace RegularExpression
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>Create the transitions</summary>
+        private void CreateTransitions()
+        {
+            int cont = 0;
+            List<int> initialStateValue = FirstLastTable.FirstOrDefault(x => x.Key.Item1 == Tree.Identifier).Value
+                                                        .Item1[0];
+            Tuple<string, List<int>> initialState = new Tuple<string, List<int>>("State 0", initialStateValue);
+            Queue<Tuple<string, List<int>>> pendingStates = new Queue<Tuple<string, List<int>>>();
+            pendingStates.Enqueue(initialState);
+
+            while (pendingStates.Count > 0)
+            {
+                Dictionary<string, List<int>> values = new Dictionary<string, List<int>>();
+                Tuple<string, List<int>> state = pendingStates.Peek();
+                foreach (int number in state.Item2)
+                {
+                    Tuple<int, string> followKey = FollowsTable.FirstOrDefault(x => x.Key.Item1 == number).Key;
+                    string transitionWith = followKey.Item2;
+                    List<int> transitionValues = FollowsTable[followKey];
+
+                    if (transitionValues.Count > 0)
+                    {
+                        if (values.ContainsKey(transitionWith))
+                        {
+                            foreach (int element in transitionValues)
+                            {
+                                if (!values[transitionWith].Contains(element))
+                                {
+                                    values[transitionWith].Add(element);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            values.Add(transitionWith, transitionValues);
+                        }
+
+                        if (!Transitions.Any(x => x.Key.Item2.SequenceEqual(transitionValues))
+                            && !pendingStates.Any(x => x.Item2.SequenceEqual(transitionValues)))
+                        {
+                            cont++;
+                            Tuple<string, List<int>> newState = new Tuple<string, List<int>>("State " + cont, transitionValues);
+                            pendingStates.Enqueue(newState);
+                        }
+                    }
+                }
+                pendingStates.Dequeue();
+                Transitions.Add(state, values);
             }
         }
     }
