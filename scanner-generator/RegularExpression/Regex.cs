@@ -8,9 +8,11 @@ namespace RegularExpression
         /// <summary>Attributes of the class</summary>
         public string Expression { get; private set; }
         public Node Tree { get; private set; }
+        public Dictionary<KeyValuePair<int, string>, KeyValuePair<List<int>[], bool>> FirstLastTable { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
+        private int count = 0;
 
         /// <summary>Constructor</summary>
         /// <param name="regex">The regular expression to use</param>
@@ -44,8 +46,8 @@ namespace RegularExpression
         /// <returns>A new tree</returns>
         private Node AddTerminal(Node node)
         {
-            Node temp = new Node("·");
-            Node rightChild = new Node("#")
+            Node temp = new Node("·", count + 2);
+            Node rightChild = new Node("#", count + 1)
             {
                 Parent = temp
             };
@@ -62,6 +64,7 @@ namespace RegularExpression
         {
             try
             {
+                int id = 0;
                 List<string> tokens = tokenizer.TokenizeExpression(regex);
                 List<string> opertors = new List<string>
                 {
@@ -79,7 +82,9 @@ namespace RegularExpression
                 {
                     if (!opertors.Contains(token))
                     {
-                        S.Push(new Node(token));
+                        id++;
+                        count = id;
+                        S.Push(new Node(token, id));
                     }
                     else if (token.Equals("("))
                     {
@@ -99,7 +104,9 @@ namespace RegularExpression
                             }
                             else
                             {
-                                Node temp = new Node(T.Pop());
+                                id++;
+                                count = id;
+                                Node temp = new Node(T.Pop(), id);
                                 Node rightChild = S.Pop();
                                 rightChild.Parent = temp;
                                 temp.RightChild = rightChild;
@@ -115,7 +122,9 @@ namespace RegularExpression
                     {
                         if (token.Equals("*") || token.Equals("+") || token.Equals("?"))
                         {
-                            Node temp = new Node(token);
+                            id++;
+                            count = id;
+                            Node temp = new Node(token, id);
                             if (S.Count < 1)
                             {
                                 throw new BadExpressionException("Missing operators");
@@ -132,7 +141,9 @@ namespace RegularExpression
                         {
                             if (S.Count >= 2)
                             {
-                                Node temp = new Node(T.Pop());
+                                id++;
+                                count = id;
+                                Node temp = new Node(T.Pop(), id);
                                 Node rightChild = S.Pop();
                                 rightChild.Parent = temp;
                                 temp.RightChild = rightChild;
@@ -162,7 +173,9 @@ namespace RegularExpression
                 {
                     if (!T.Peek().Equals("(") && S.Count >= 2)
                     {
-                        Node temp = new Node(T.Pop());
+                        id++;
+                        count = id;
+                        Node temp = new Node(T.Pop(), id);
                         Node rightChild = S.Pop();
                         rightChild.Parent = temp;
                         temp.RightChild = rightChild;
