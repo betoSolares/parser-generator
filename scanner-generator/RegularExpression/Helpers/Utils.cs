@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RegularExpression
 {
@@ -14,6 +15,24 @@ namespace RegularExpression
             int operatorIndex = operators.FindIndex(x => x.Equals(lastOperator));
             int tokenIndex = operators.FindIndex(x => x.Equals(token));
             return tokenIndex >= operatorIndex;
+        }
+
+        /// <summary>Get all the terminals symbols on the tree</summary>
+        /// <param name="node">The node of the tree</param>
+        /// <param name="list">The list with all the terminals symbols</param>
+        public void PopulateDictionary(Node node, ref List<Tuple<int, string>> list)
+        {
+            if (node != null)
+            {
+                PopulateDictionary(node.LeftChild, ref list);
+                PopulateDictionary(node.RightChild, ref list);
+
+                if (node.LeftChild == null && node.RightChild == null)
+                {
+                    Tuple<int, string> identifier = new Tuple<int, string>(node.Identifier, node.Value);
+                    list.Add(identifier);
+                }
+            }
         }
     }
 }
