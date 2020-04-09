@@ -8,7 +8,7 @@ namespace RegularExpression
         /// <summary>Attributes of the class</summary>
         public string Expression { get; private set; }
         public Node Tree { get; private set; }
-        public Dictionary<KeyValuePair<int, string>, KeyValuePair<List<int>[], bool>> FirstLastTable { get; private set; }
+        public Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>> FirstLastTable { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
@@ -21,6 +21,8 @@ namespace RegularExpression
             Expression = regex;
             CreateTree(regex);
             Tree = AddTerminal(Tree);
+            FirstLastTable = new Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>>();
+            CreateFirstlastsTable(Tree);
         }
 
         //TODO: Find an efficient way to evaluate the text using the tree.
@@ -202,6 +204,98 @@ namespace RegularExpression
             catch (Exception e)
             {
                 throw new BadExpressionException(e.Message);
+            }
+        }
+
+        /// <summary>Transverse the tree and create the first and lasts</summary>
+        /// <param name="node">The current node</param>
+        private void CreateFirstlastsTable(Node node)
+        {
+            if (node != null)
+            {
+                CreateFirstlastsTable(node.LeftChild);
+                CreateFirstlastsTable(node.RightChild);
+
+                if (node.LeftChild == null && node.RightChild == null)
+                {
+                    List<int> firsts = new List<int> { node.Identifier };
+                    List<int> lasts = new List<int> { node.Identifier };
+                    List<int>[] values = new List<int>[2] { firsts, lasts };
+                    Tuple<int, string> identifier = new Tuple<int, string>(node.Identifier, node.Value);
+                    Tuple<List<int>[], bool> data = new Tuple<List<int>[], bool>(values, false);
+                    FirstLastTable.Add(identifier, data);
+                }
+                else
+                {
+                    List<int> firsts = new List<int>();
+                    List<int> lasts = new List<int>();
+                    bool nullable = false;
+                    Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier, node.LeftChild.Value);
+                    Tuple<List<int>[], bool> c1 = FirstLastTable[key];
+
+                    if (node.Value.Equals("|"))
+                    {
+                        key = new Tuple<int, string>(node.RightChild.Identifier, node.RightChild.Value);
+                        Tuple<List<int>[], bool> c2 = FirstLastTable[key];
+                        firsts.AddRange(c1.Item1[0]);
+                        firsts.AddRange(c2.Item1[0]);
+                        lasts.AddRange(c1.Item1[1]);
+                        lasts.AddRange(c2.Item1[1]);
+                        if (c1.Item2 || c2.Item2)
+                            nullable = true;
+
+                    }
+                    else if (node.Value.Equals("·"))
+                    {
+                        key = new Tuple<int, string>(node.RightChild.Identifier, node.RightChild.Value);
+                        Tuple<List<int>[], bool> c2 = FirstLastTable[key];
+
+                        if (c1.Item2)
+                        {
+                            firsts.AddRange(c1.Item1[0]);
+                            firsts.AddRange(c2.Item1[0]);
+                        }
+                        else
+                        {
+                            firsts.AddRange(c1.Item1[0]);
+                        }
+
+                        if (c2.Item2)
+                        {
+                            lasts.AddRange(c1.Item1[1]);
+                            lasts.AddRange(c2.Item1[1]);
+                        }
+                        else
+                        {
+                            lasts.AddRange(c2.Item1[1]);
+                        }
+
+                        if (c1.Item2 && c2.Item2)
+                            nullable = true;
+                    }
+                    else if (node.Value.Equals("*"))
+                    {
+                        firsts.AddRange(c1.Item1[0]);
+                        lasts.AddRange(c1.Item1[1]);
+                        nullable = true;
+                    }
+                    else if (node.Value.Equals("+"))
+                    {
+                        firsts.AddRange(c1.Item1[0]);
+                        lasts.AddRange(c1.Item1[1]);
+                    }
+                    else
+                    {
+                        firsts.AddRange(c1.Item1[0]);
+                        lasts.AddRange(c1.Item1[1]);
+                        nullable = true;
+                    }
+
+                    List<int>[] values = new List<int>[2] { firsts, lasts };
+                    Tuple<int, string> identifier = new Tuple<int, string>(node.Identifier, node.Value);
+                    Tuple<List<int>[], bool> data = new Tuple<List<int>[], bool>(values, nullable);
+                    FirstLastTable.Add(identifier, data);
+                }
             }
         }
     }
