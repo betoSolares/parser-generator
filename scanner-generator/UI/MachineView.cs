@@ -1,6 +1,8 @@
 ﻿using Helpers;
 using RegularExpression;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace scanner_generator.UI
@@ -15,7 +17,26 @@ namespace scanner_generator.UI
         public MachineView(Dictionary<string, string> tokens)
         {
             InitializeComponent();
-            regex = new Regex(expression.MakeExpression(tokens));
+            try
+            {
+                regex = new Regex(expression.MakeExpression(tokens));
+            }
+            catch (Exception ex)
+            {
+                message.Text = "An unexpected error ocurred: " + ex.Message;
+            }
+        }
+
+        /// <summary>things to do on the form load</summary>
+        /// <param name="sender">The object that raised the event</param>
+        /// <param name="e">Object that is being handled</param>
+        private void MachineView_Load(object sender, EventArgs e)
+        {
+            if (regex == null)
+            {
+                message.ForeColor = Color.Maroon;
+                message.Visible = true;
+            }
         }
     }
 }
