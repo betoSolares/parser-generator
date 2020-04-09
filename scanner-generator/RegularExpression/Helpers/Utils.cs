@@ -17,10 +17,25 @@ namespace RegularExpression
             return tokenIndex >= operatorIndex;
         }
 
+        /// <summary>Create the dictionary for the follows table</summary>
+        /// <param name="node">The root node of the tree</param>
+        /// <returns>A dictionary with all the keys</returns>
+        public Dictionary<Tuple<int, string>, List<int>> CreateDictionary(Node node)
+        {
+            List<Tuple<int, string>> list = new List<Tuple<int, string>>();
+            PopulateDictionary(node, ref list);
+            Dictionary<Tuple<int, string>, List<int>> dictionary = new Dictionary<Tuple<int, string>, List<int>>();
+            foreach(Tuple<int, string> element in list)
+            {
+                dictionary.Add(element, new List<int>());
+            }
+            return dictionary;
+        }
+
         /// <summary>Get all the terminals symbols on the tree</summary>
         /// <param name="node">The node of the tree</param>
         /// <param name="list">The list with all the terminals symbols</param>
-        public void PopulateDictionary(Node node, ref List<Tuple<int, string>> list)
+        private void PopulateDictionary(Node node, ref List<Tuple<int, string>> list)
         {
             if (node != null)
             {
