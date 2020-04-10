@@ -31,6 +31,7 @@
             this.close_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.regex = new System.Windows.Forms.TextBox();
+            this.panel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // close_btn
@@ -41,7 +42,7 @@
             this.close_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.close_btn.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.close_btn.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.close_btn.Location = new System.Drawing.Point(301, 408);
+            this.close_btn.Location = new System.Drawing.Point(324, 408);
             this.close_btn.Name = "close_btn";
             this.close_btn.Size = new System.Drawing.Size(159, 30);
             this.close_btn.TabIndex = 9;
@@ -76,12 +77,21 @@
             this.regex.TabIndex = 11;
             this.regex.WordWrap = false;
             // 
+            // panel
+            // 
+            this.panel.Location = new System.Drawing.Point(12, 61);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(776, 341);
+            this.panel.TabIndex = 12;
+            this.panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
+            // 
             // TreeView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panel);
             this.Controls.Add(this.regex);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.close_btn);
@@ -100,5 +110,6 @@
         private System.Windows.Forms.Button close_btn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox regex;
+        private System.Windows.Forms.Panel panel;
     }
 }
