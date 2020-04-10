@@ -2,6 +2,7 @@
 using RegularExpression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,6 +11,7 @@ namespace scanner_generator.UI
     public partial class MachineView : Form
     {
         private readonly Expression expression = new Expression();
+        private readonly Table table = new Table();
         private readonly Regex regex = null;
 
         /// <summary>Constructor</summary>
@@ -36,7 +38,33 @@ namespace scanner_generator.UI
             {
                 message.ForeColor = Color.Maroon;
                 message.Visible = true;
+                firstLastTable.Visible = false;
             }
+            else
+            {
+                label1.Visible = true;
+                LoadFirstLastTable();
+            }
+        }
+
+        /// <summary>Load the first and last data into the table</summary>
+        private void LoadFirstLastTable()
+        {
+            DataTable dataTable = new DataTable();
+
+            dataTable.Columns.Add("ID");
+            dataTable.Columns.Add("Symbol");
+            dataTable.Columns.Add("First");
+            dataTable.Columns.Add("Last");
+            dataTable.Columns.Add("Nullable");
+
+            foreach (KeyValuePair<Tuple<int, string>, Tuple<List<int>[], bool>> item in regex.FirstLastTable)
+            {
+                dataTable.Rows.Add(item.Key.Item1, item.Key.Item2, table.GetList(item.Value.Item1[0]),
+                                   table.GetList(item.Value.Item1[1]), item.Value.Item2);
+            }
+
+            firstLastTable.DataSource = dataTable;
         }
     }
 }
