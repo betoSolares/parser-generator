@@ -51,6 +51,7 @@ namespace scanner_generator.UI
                 label3.Visible = true;
                 LoadTransitions();
                 mainview_btn.Visible = true;
+                showtree_btn.Visible = true;
             }
         }
 
@@ -140,6 +141,17 @@ namespace scanner_generator.UI
                 mainView.ShowDialog();
             }
             Close();
+        }
+
+        /// <summary>Change to the tree view</summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Object that is being handled</param>
+        private void ShowTree(object sender, EventArgs e)
+        {
+            using (TreeView treeView = new TreeView())
+            {
+                treeView.ShowDialog();
+            }
         }
     }
 }

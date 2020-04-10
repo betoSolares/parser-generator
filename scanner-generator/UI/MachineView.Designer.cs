@@ -36,6 +36,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.transitionsTable = new System.Windows.Forms.DataGridView();
             this.mainview_btn = new System.Windows.Forms.Button();
+            this.showtree_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.firstLastTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.followTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transitionsTable)).BeginInit();
@@ -155,12 +156,30 @@
             this.mainview_btn.Visible = false;
             this.mainview_btn.Click += new System.EventHandler(this.ChangeView);
             // 
+            // showtree_btn
+            // 
+            this.showtree_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.showtree_btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.showtree_btn.FlatAppearance.BorderColor = System.Drawing.SystemColors.MenuText;
+            this.showtree_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showtree_btn.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showtree_btn.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.showtree_btn.Location = new System.Drawing.Point(740, 510);
+            this.showtree_btn.Name = "showtree_btn";
+            this.showtree_btn.Size = new System.Drawing.Size(105, 30);
+            this.showtree_btn.TabIndex = 16;
+            this.showtree_btn.Text = "Show Tree";
+            this.showtree_btn.UseVisualStyleBackColor = false;
+            this.showtree_btn.Visible = false;
+            this.showtree_btn.Click += new System.EventHandler(this.ShowTree);
+            // 
             // MachineView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(857, 552);
+            this.Controls.Add(this.showtree_btn);
             this.Controls.Add(this.mainview_btn);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.transitionsTable);
@@ -192,5 +211,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView transitionsTable;
         private System.Windows.Forms.Button mainview_btn;
+        private System.Windows.Forms.Button showtree_btn;
     }
 }
