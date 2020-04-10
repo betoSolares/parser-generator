@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RegularExpression;
+using System.Collections.Generic;
 
 namespace Helpers
 {
@@ -22,6 +23,29 @@ namespace Helpers
             else
             {
                 return text.Remove(text.Length - 2, 2);
+            }
+        }
+
+        /// <summary>Get a list with all the terminals nodes</summary>
+        /// <param name="node">The current node</param>
+        /// <param name="list">The list with the terminal nodes</param>
+        public void GetTerminals(Node node, ref List<string> list, int identifierTerminal)
+        {
+            if (node != null)
+            {
+                GetTerminals(node.LeftChild, ref list, identifierTerminal);
+                GetTerminals(node.RightChild, ref list, identifierTerminal);
+
+                if (node.LeftChild == null && node.RightChild == null)
+                {
+                    if (node.Identifier != identifierTerminal)
+                    {
+                        if (!list.Contains(node.Value))
+                        {
+                            list.Add(node.Value);
+                        }
+                    }
+                }
             }
         }
     }
