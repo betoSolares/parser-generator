@@ -44,6 +44,8 @@ namespace scanner_generator.UI
             {
                 label1.Visible = true;
                 LoadFirstLastTable();
+                label2.Visible = true;
+                LoadFollowTable();
             }
         }
 
@@ -65,6 +67,23 @@ namespace scanner_generator.UI
             }
 
             firstLastTable.DataSource = dataTable;
+        }
+
+        /// <summary>Load the follow data into the table</summary>
+        private void LoadFollowTable()
+        {
+            DataTable dataTable = new DataTable();
+
+            dataTable.Columns.Add("ID");
+            dataTable.Columns.Add("Symbol");
+            dataTable.Columns.Add("First");
+
+            foreach (KeyValuePair<Tuple<int, string>, List<int>> item in regex.FollowsTable)
+            {
+                dataTable.Rows.Add(item.Key.Item1, item.Key.Item2, table.GetList(item.Value));
+            }
+
+            followTable.DataSource = dataTable;
         }
     }
 }

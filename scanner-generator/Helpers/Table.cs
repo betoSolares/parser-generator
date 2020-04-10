@@ -14,7 +14,15 @@ namespace Helpers
             {
                 text += number + ", ";
             }
-            return text.Remove(text.Length - 2, 2);
+            
+            if (text.Length == 0)
+            {
+                return " --- ";
+            }
+            else
+            {
+                return text.Remove(text.Length - 2, 2);
+            }
         }
     }
 }
