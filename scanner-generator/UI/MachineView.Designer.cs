@@ -35,6 +35,7 @@
             this.followTable = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.transitionsTable = new System.Windows.Forms.DataGridView();
+            this.mainview_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.firstLastTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.followTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transitionsTable)).BeginInit();
@@ -137,12 +138,30 @@
             this.transitionsTable.Size = new System.Drawing.Size(833, 221);
             this.transitionsTable.TabIndex = 13;
             // 
+            // mainview_btn
+            // 
+            this.mainview_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.mainview_btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mainview_btn.FlatAppearance.BorderColor = System.Drawing.SystemColors.MenuText;
+            this.mainview_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mainview_btn.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainview_btn.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.mainview_btn.Location = new System.Drawing.Point(12, 510);
+            this.mainview_btn.Name = "mainview_btn";
+            this.mainview_btn.Size = new System.Drawing.Size(97, 30);
+            this.mainview_btn.TabIndex = 15;
+            this.mainview_btn.Text = "Go Back";
+            this.mainview_btn.UseVisualStyleBackColor = false;
+            this.mainview_btn.Visible = false;
+            this.mainview_btn.Click += new System.EventHandler(this.ChangeView);
+            // 
             // MachineView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(857, 543);
+            this.ClientSize = new System.Drawing.Size(857, 552);
+            this.Controls.Add(this.mainview_btn);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.transitionsTable);
             this.Controls.Add(this.label2);
@@ -172,5 +191,6 @@
         private System.Windows.Forms.DataGridView followTable;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView transitionsTable;
+        private System.Windows.Forms.Button mainview_btn;
     }
 }

@@ -50,6 +50,7 @@ namespace scanner_generator.UI
                 LoadFollowTable();
                 label3.Visible = true;
                 LoadTransitions();
+                mainview_btn.Visible = true;
             }
         }
 
@@ -126,6 +127,19 @@ namespace scanner_generator.UI
             }
 
             transitionsTable.DataSource = dataTable;
+        }
+
+        /// <summary>Change to the main view</summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Object that is being handled</param>
+        private void ChangeView(object sender, EventArgs e)
+        {
+            Hide();
+            using (MainView mainView = new MainView())
+            {
+                mainView.ShowDialog();
+            }
+            Close();
         }
     }
 }
