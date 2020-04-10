@@ -148,7 +148,7 @@ namespace scanner_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void ShowTree(object sender, EventArgs e)
         {
-            using (TreeView treeView = new TreeView())
+            using (TreeView treeView = new TreeView(regex.Expression, regex.Tree))
             {
                 treeView.ShowDialog();
             }
