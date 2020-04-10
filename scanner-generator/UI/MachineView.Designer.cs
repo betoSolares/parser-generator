@@ -33,8 +33,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.followTable = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.transitionsTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.firstLastTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.followTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.transitionsTable)).BeginInit();
             this.SuspendLayout();
             // 
             // message
@@ -48,7 +51,7 @@
             this.message.Multiline = true;
             this.message.Name = "message";
             this.message.ReadOnly = true;
-            this.message.Size = new System.Drawing.Size(833, 324);
+            this.message.Size = new System.Drawing.Size(833, 519);
             this.message.TabIndex = 8;
             this.message.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.message.Visible = false;
@@ -61,7 +64,7 @@
             this.firstLastTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.firstLastTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.firstLastTable.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.firstLastTable.Location = new System.Drawing.Point(12, 44);
+            this.firstLastTable.Location = new System.Drawing.Point(12, 30);
             this.firstLastTable.Name = "firstLastTable";
             this.firstLastTable.ReadOnly = true;
             this.firstLastTable.RowHeadersVisible = false;
@@ -100,19 +103,48 @@
             this.followTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.followTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.followTable.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.followTable.Location = new System.Drawing.Point(530, 44);
+            this.followTable.Location = new System.Drawing.Point(530, 30);
             this.followTable.Name = "followTable";
             this.followTable.ReadOnly = true;
             this.followTable.RowHeadersVisible = false;
             this.followTable.Size = new System.Drawing.Size(315, 221);
             this.followTable.TabIndex = 11;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(395, 254);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(79, 20);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Transitions";
+            this.label3.Visible = false;
+            // 
+            // transitionsTable
+            // 
+            this.transitionsTable.AllowUserToAddRows = false;
+            this.transitionsTable.AllowUserToDeleteRows = false;
+            this.transitionsTable.BackgroundColor = System.Drawing.Color.White;
+            this.transitionsTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.transitionsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.transitionsTable.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.transitionsTable.Location = new System.Drawing.Point(12, 277);
+            this.transitionsTable.Name = "transitionsTable";
+            this.transitionsTable.ReadOnly = true;
+            this.transitionsTable.RowHeadersVisible = false;
+            this.transitionsTable.Size = new System.Drawing.Size(833, 221);
+            this.transitionsTable.TabIndex = 13;
+            // 
             // MachineView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(857, 348);
+            this.ClientSize = new System.Drawing.Size(857, 543);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.transitionsTable);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.followTable);
             this.Controls.Add(this.label1);
@@ -125,6 +157,7 @@
             this.Load += new System.EventHandler(this.MachineView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.firstLastTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.followTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.transitionsTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,5 +170,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView followTable;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridView transitionsTable;
     }
 }

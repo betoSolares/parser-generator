@@ -39,6 +39,8 @@ namespace scanner_generator.UI
                 message.ForeColor = Color.Maroon;
                 message.Visible = true;
                 firstLastTable.Visible = false;
+                followTable.Visible = false;
+                transitionsTable.Visible = false;
             }
             else
             {
@@ -46,6 +48,8 @@ namespace scanner_generator.UI
                 LoadFirstLastTable();
                 label2.Visible = true;
                 LoadFollowTable();
+                label3.Visible = true;
+                LoadTransitions();
             }
         }
 
@@ -84,6 +88,42 @@ namespace scanner_generator.UI
             }
 
             followTable.DataSource = dataTable;
+        }
+
+        /// <summary>Load the transitions data into the table</summary>
+        private void LoadTransitions()
+        {
+            List<string> terminals = new List<string>();
+            table.GetTerminals(regex.Tree, ref terminals, regex.Tree.RightChild.Identifier);
+            DataTable dataTable = new DataTable();
+
+            dataTable.Columns.Add("State");
+            foreach (string element in terminals)
+            {
+                dataTable.Columns.Add(element);
+            }
+
+            foreach (KeyValuePair<Tuple<string, List<int>>, Dictionary<string, List<int>>> item in regex.Transitions)
+            {
+                object[] row = new object[terminals.Count + 1];
+                row[0] = item.Key.Item1 + " = {" + table.GetList(item.Key.Item2) + "}";
+
+                for (int i = 0; i < terminals.Count; i++)
+                {
+                    if (item.Value.ContainsKey(terminals[i]))
+                    {
+                        row[i + 1] = table.GetList(item.Value[terminals[i]]);
+                    }
+                    else
+                    {
+                        row[i + 1] = " --- ";
+                    }
+                }
+
+                dataTable.Rows.Add(row);
+            }
+
+            transitionsTable.DataSource = dataTable;
         }
     }
 }
