@@ -98,25 +98,27 @@ namespace scanner_generator.UI
             DataTable dataTable = new DataTable();
 
             dataTable.Columns.Add("State");
+            dataTable.Columns.Add("Accepting");
             foreach (string element in terminals)
             {
                 dataTable.Columns.Add(element);
             }
 
-            foreach (KeyValuePair<Tuple<string, List<int>>, Dictionary<string, List<int>>> item in regex.Transitions)
+            foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in regex.Transitions)
             {
-                object[] row = new object[terminals.Count + 1];
+                object[] row = new object[terminals.Count + 2];
                 row[0] = item.Key.Item1 + " = {" + table.GetList(item.Key.Item2) + "}";
+                row[1] = item.Key.Item3;
 
                 for (int i = 0; i < terminals.Count; i++)
                 {
                     if (item.Value.ContainsKey(terminals[i]))
                     {
-                        row[i + 1] = table.GetList(item.Value[terminals[i]]);
+                        row[i + 2] = table.GetList(item.Value[terminals[i]]);
                     }
                     else
                     {
-                        row[i + 1] = " --- ";
+                        row[i + 2] = " --- ";
                     }
                 }
 

@@ -11,7 +11,7 @@ namespace RegularExpression
         public Node Tree { get; private set; }
         public Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>> FirstLastTable { get; private set; }
         public Dictionary<Tuple<int, string>, List<int>> FollowsTable { get; private set; }
-        public Dictionary<Tuple<string, List<int>>, Dictionary<string, List<int>>> Transitions { get; private set; }
+        public Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions { get; private set; }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
@@ -28,7 +28,7 @@ namespace RegularExpression
             CreateFirstlastsTable(Tree);
             FollowsTable = utils.CreateDictionary(Tree);
             CreateFollowsTable(Tree);
-            Transitions = new Dictionary<Tuple<string, List<int>>, Dictionary<string, List<int>>>();
+            Transitions = new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>();
             CreateTransitions();
         }
 
@@ -390,8 +390,19 @@ namespace RegularExpression
                         }
                     }
                 }
+
+                Tuple<string, List<int>, bool> key;
+                if (state.Item2.Contains(Tree.RightChild.Identifier))
+                {
+                    key = new Tuple<string, List<int>, bool>(state.Item1, state.Item2, true);
+                }
+                else
+                {
+                    key = new Tuple<string, List<int>, bool>(state.Item1, state.Item2, false);
+                }
+
                 pendingStates.Dequeue();
-                Transitions.Add(state, values);
+                Transitions.Add(key, values);
             }
         }
     }
