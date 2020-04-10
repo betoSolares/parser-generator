@@ -32,6 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.regex = new System.Windows.Forms.TextBox();
             this.panel = new System.Windows.Forms.Panel();
+            this.picturebox = new System.Windows.Forms.PictureBox();
+            this.panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // close_btn
@@ -79,11 +82,21 @@
             // 
             // panel
             // 
-            this.panel.Location = new System.Drawing.Point(12, 61);
+            this.panel.AutoScroll = true;
+            this.panel.Controls.Add(this.picturebox);
+            this.panel.Location = new System.Drawing.Point(16, 70);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(776, 341);
+            this.panel.Size = new System.Drawing.Size(772, 332);
             this.panel.TabIndex = 12;
-            this.panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
+            // 
+            // picturebox
+            // 
+            this.picturebox.Location = new System.Drawing.Point(3, 16);
+            this.picturebox.Name = "picturebox";
+            this.picturebox.Size = new System.Drawing.Size(766, 300);
+            this.picturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picturebox.TabIndex = 0;
+            this.picturebox.TabStop = false;
             // 
             // TreeView
             // 
@@ -100,6 +113,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tree View";
             this.TopMost = true;
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,5 +127,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox regex;
         private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.PictureBox picturebox;
     }
 }

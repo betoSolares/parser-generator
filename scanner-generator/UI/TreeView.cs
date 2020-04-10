@@ -8,6 +8,8 @@ namespace scanner_generator.UI
     public partial class TreeView : Form
     {
         private readonly Node tree = null;
+        private static readonly Bitmap bitmap = new Bitmap(1000, 1000);
+        private readonly Graphics graphics = Graphics.FromImage(bitmap);
 
         /// <summary>Constructor</summary>
         /// <param name="expression">The regular expression of the tree</param>
@@ -17,6 +19,8 @@ namespace scanner_generator.UI
             InitializeComponent();
             tree = node;
             regex.Text = expression;
+            DrawTree(tree, Width, 50, 250);
+            picturebox.Image = bitmap;
         }
 
         /// <summary>Close the window</summary>
@@ -36,7 +40,6 @@ namespace scanner_generator.UI
         {
             if (node != null)
             {
-                Graphics graphics = panel.CreateGraphics();
                 graphics.FillEllipse(new SolidBrush(Color.Black), new RectangleF(x, y, 50, 25));
                 graphics.DrawString(node.Value, new Font("Segoe UI", 11, FontStyle.Regular),
                                     new SolidBrush(Color.White), x + 5, y + 5);
@@ -53,14 +56,6 @@ namespace scanner_generator.UI
                     DrawTree(node.RightChild, x + distance, y + 50, distance / 2);
                 }
             }
-        }
-
-        /// <summary>Draw the tree on the panel</summary>
-        /// <param name="sender">The object that raised the event.</param>
-        /// <param name="e">Object that is being handled</param>
-        private void Draw(object sender, PaintEventArgs e)
-        {
-            DrawTree(tree, Width / 2, 20, 450);
         }
     }
 }
