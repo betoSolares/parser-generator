@@ -1,6 +1,7 @@
 ﻿using RegularExpression;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace scanner_generator.UI
@@ -8,7 +9,7 @@ namespace scanner_generator.UI
     public partial class TreeView : Form
     {
         private readonly Node tree = null;
-        private static readonly Bitmap bitmap = new Bitmap(1000, 1000);
+        private static readonly Bitmap bitmap = new Bitmap(9999, 9999);
         private readonly Graphics graphics = Graphics.FromImage(bitmap);
 
         /// <summary>Constructor</summary>
@@ -19,7 +20,7 @@ namespace scanner_generator.UI
             InitializeComponent();
             tree = node;
             regex.Text = expression;
-            DrawTree(tree, Width, 50, 250);
+            DrawTree(tree, Width * 3, 50, 1000);
             picturebox.Image = bitmap;
         }
 
@@ -53,7 +54,7 @@ namespace scanner_generator.UI
                 if (node.RightChild != null)
                 {
                     graphics.DrawLine(new Pen(Color.Black), x + 15, y + 15, x + distance + 15, y + 65);
-                    DrawTree(node.RightChild, x + distance, y + 50, distance / 2);
+                    DrawTree(node.RightChild, x + distance, y + 50, distance);
                 }
             }
         }
