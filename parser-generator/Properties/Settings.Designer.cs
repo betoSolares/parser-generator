@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace scanner_generator.Properties
+namespace parser_generator.Properties
 {
 
 

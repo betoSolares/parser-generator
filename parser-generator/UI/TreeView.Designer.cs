@@ -1,4 +1,4 @@
-﻿namespace scanner_generator.UI
+﻿namespace parser_generator.UI
 {
     partial class TreeView
     {

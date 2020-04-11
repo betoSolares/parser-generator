@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace scanner_generator.UI
+namespace parser_generator.UI
 {
     public partial class MainView : Form
     {

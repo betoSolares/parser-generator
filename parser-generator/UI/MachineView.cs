@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace scanner_generator.UI
+namespace parser_generator.UI
 {
     public partial class MachineView : Form
     {

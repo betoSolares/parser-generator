@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace scanner_generator
+namespace parser_generator
 {
     static class Program
     {
