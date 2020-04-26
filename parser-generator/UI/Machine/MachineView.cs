@@ -51,6 +51,7 @@ namespace parser_generator.UI
                 label3.Visible = true;
                 LoadTransitions();
                 mainview_btn.Visible = true;
+                creator_btn.Visible = true;
                 showtree_btn.Visible = true;
             }
         }
@@ -151,6 +152,17 @@ namespace parser_generator.UI
             using (TreeView treeView = new TreeView(regex.Expression, regex.Tree))
             {
                 treeView.ShowDialog();
+            }
+        }
+
+        /// <summary>Change to the creator view</summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Object that is being handled</param>
+        private void ShowCreator(object sender, EventArgs e)
+        {
+            using (CreatorView creatorView = new CreatorView())
+            {
+                creatorView.ShowDialog();
             }
         }
     }

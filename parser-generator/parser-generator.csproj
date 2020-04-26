@@ -57,6 +57,12 @@
     <Compile Include="RegularExpression\Helpers\Utils.cs" />
     <Compile Include="RegularExpression\Node.cs" />
     <Compile Include="RegularExpression\Regex.cs" />
+    <Compile Include="UI\Creator\CreatorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Creator\CreatorView.Designer.cs">
+      <DependentUpon>CreatorView.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Machine\MachineView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\Creator\CreatorView.resx">
+      <DependentUpon>CreatorView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Machine\MachineView.resx">
       <DependentUpon>MachineView.cs</DependentUpon>
     </EmbeddedResource>
