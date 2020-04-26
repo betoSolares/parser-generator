@@ -57,22 +57,22 @@
     <Compile Include="RegularExpression\Helpers\Utils.cs" />
     <Compile Include="RegularExpression\Node.cs" />
     <Compile Include="RegularExpression\Regex.cs" />
-    <Compile Include="UI\MachineView.cs">
+    <Compile Include="UI\Machine\MachineView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\MachineView.Designer.cs">
+    <Compile Include="UI\Machine\MachineView.Designer.cs">
       <DependentUpon>MachineView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MainView.cs">
+    <Compile Include="UI\Main\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\MainView.Designer.cs">
+    <Compile Include="UI\Main\MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TreeView.cs">
+    <Compile Include="UI\Tree\TreeView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\TreeView.Designer.cs">
+    <Compile Include="UI\Tree\TreeView.Designer.cs">
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -84,13 +84,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\MachineView.resx">
+    <EmbeddedResource Include="UI\Machine\MachineView.resx">
       <DependentUpon>MachineView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MainView.resx">
+    <EmbeddedResource Include="UI\Main\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\TreeView.resx">
+    <EmbeddedResource Include="UI\Tree\TreeView.resx">
       <DependentUpon>TreeView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
