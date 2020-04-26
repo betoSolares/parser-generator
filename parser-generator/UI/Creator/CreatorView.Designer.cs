@@ -56,6 +56,7 @@
             // 
             this.file_path.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.file_path.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.file_path.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.file_path.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.file_path.ForeColor = System.Drawing.SystemColors.MenuText;
             this.file_path.Location = new System.Drawing.Point(74, 59);
@@ -78,6 +79,7 @@
             this.chooser_btn.TabIndex = 9;
             this.chooser_btn.Text = "Browse";
             this.chooser_btn.UseVisualStyleBackColor = false;
+            this.chooser_btn.Click += new System.EventHandler(this.ChooseFile);
             // 
             // label1
             // 
