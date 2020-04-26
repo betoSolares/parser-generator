@@ -362,7 +362,7 @@ namespace RegularExpression
                 {
                     Tuple<int, string> followKey = FollowsTable.FirstOrDefault(x => x.Key.Item1 == number).Key;
                     string transitionWith = followKey.Item2;
-                    List<int> transitionValues = FollowsTable[followKey];
+                    List<int> transitionValues = new List<int>(FollowsTable[followKey]);
 
                     if (transitionValues.Count > 0)
                     {
@@ -380,6 +380,7 @@ namespace RegularExpression
                         {
                             values.Add(transitionWith, transitionValues);
                         }
+                        values[transitionWith].Sort();
 
                         if (!Transitions.Any(x => x.Key.Item2.SequenceEqual(transitionValues))
                             && !pendingStates.Any(x => x.Item2.SequenceEqual(transitionValues)))
