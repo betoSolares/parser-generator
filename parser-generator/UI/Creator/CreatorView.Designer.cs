@@ -51,6 +51,7 @@
             this.generate_btn.TabIndex = 11;
             this.generate_btn.Text = "Generate Project";
             this.generate_btn.UseVisualStyleBackColor = false;
+            this.generate_btn.Click += new System.EventHandler(this.GenerateProject);
             // 
             // file_path
             // 
@@ -127,7 +128,6 @@
             this.message.ReadOnly = true;
             this.message.Size = new System.Drawing.Size(331, 69);
             this.message.TabIndex = 14;
-            this.message.Visible = false;
             // 
             // CreatorView
             // 
