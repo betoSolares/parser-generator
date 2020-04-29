@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Helpers;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -7,10 +9,15 @@ namespace parser_generator.UI
 {
     public partial class CreatorView : Form
     {
+        private readonly Dictionary<string, string> _sets;
+        private readonly Dictionary<string, string> _tokens;
+
         /// <summary>Constructor</summary>
-        public CreatorView()
+        public CreatorView(Dictionary<string, string> sets, Dictionary<string, string> tokens)
         {
             InitializeComponent();
+            _sets = sets;
+            _tokens = tokens;
         }
 
         /// <summary>Let the user select the folder.</summary>
@@ -40,7 +47,9 @@ namespace parser_generator.UI
             {
                 try
                 {
-                    Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text);
+                    Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text + "\\Solution");
+                    Code code = new Code(_tokens, _sets);
+                    code.WriteList(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     message.Text = "Solution generated";
                     message.ForeColor = Color.White;
                 }
