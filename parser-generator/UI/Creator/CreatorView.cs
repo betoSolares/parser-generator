@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace parser_generator.UI
@@ -32,10 +34,49 @@ namespace parser_generator.UI
             if (string.IsNullOrEmpty(file_path.Text) || string.IsNullOrWhiteSpace(file_path.Text))
             {
                 message.Text = "Please select a directory for the solution";
+                message.ForeColor = Color.White;
             }
             else
             {
-                // Copy solution
+                try
+                {
+                    Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text);
+                    message.Text = "Solution generated";
+                    message.ForeColor = Color.White;
+                }
+                catch (Exception ex)
+                {
+                    message.Text = "An error ocurred: " + ex.Message;
+                    message.ForeColor = Color.Maroon;
+                }
+            }
+        }
+
+        /// <summary>Copy ech file and subdirectory</summary>
+        /// <param name="source">The source directory path</param>
+        /// <param name="target">The target directory path</param>
+        private void Copy(string source, string target)
+        {
+            DirectoryInfo sourceDirectory = new DirectoryInfo(source);
+            DirectoryInfo targetDirectory = new DirectoryInfo(target);
+            CopyAll(sourceDirectory, targetDirectory);
+        }
+
+        /// <summary>Copy each file and subdirectory</summary>
+        /// <param name="source">The source directory</param>
+        /// <param name="target">The target directory</param>
+        private void CopyAll(DirectoryInfo source, DirectoryInfo target)
+        {
+            Directory.CreateDirectory(target.FullName);
+            foreach (FileInfo file in source.GetFiles())
+            {
+                file.CopyTo(Path.Combine(target.FullName, file.Name), true);
+            }
+            
+            foreach (DirectoryInfo sub in source.GetDirectories())
+            {
+                DirectoryInfo targetsub = target.CreateSubdirectory(sub.Name);
+                CopyAll(sub, targetsub);
             }
         }
     }
