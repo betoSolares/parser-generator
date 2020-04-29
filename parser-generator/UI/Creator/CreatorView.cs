@@ -29,43 +29,13 @@ namespace parser_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void GenerateProject(object sender, EventArgs e)
         {
-            char[] characters = new char[]
+            if (string.IsNullOrEmpty(file_path.Text) || string.IsNullOrWhiteSpace(file_path.Text))
             {
-                ';',
-                ':',
-                '*',
-                '\\',
-                '?',
-                '&',
-                '/',
-                '|',
-                '°',
-                '¬',
-                '"',
-                '#',
-                '%',
-                '<',
-                '>',
-                ' ',
-                '\t',
-                '\n',
-                '\r'
-            };
-
-            if (name.Text.IndexOfAny(characters) == -1 && !string.IsNullOrEmpty(name.Text))
-            {
-                if (string.IsNullOrEmpty(file_path.Text) || string.IsNullOrWhiteSpace(file_path.Text))
-                {
-                    message.Text = "Please select a directory for the solution";
-                }
-                else
-                {
-                }
+                message.Text = "Please select a directory for the solution";
             }
             else
             {
-                message.Text = "Please check that the name doesn't contains spaces, new lines or " +
-                               " ;, :, *, \\, ?, &, /, |, °, ¬, \", #, %, <, >,";
+                // Copy solution
             }
         }
     }
