@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -8,14 +9,76 @@ namespace Helpers
     {
         private readonly Dictionary<string, string> tokens;
         private readonly Dictionary<string, string> sets;
+        private readonly Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions;
 
         /// <summary>Constructor</summary>
         /// <param name="t">The dictionary with the tokens</param>
         /// <param name="s">The dictionary with the sets</param>
-        public Code(Dictionary<string, string> t, Dictionary<string, string> s)
+        public Code(Dictionary<string, string> t, Dictionary<string, string> s,
+                    Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> trans)
         {
             tokens = t;
             sets = s;
+            Transitions = trans;
+        }
+
+        /// <summary>Write the transitions for the evaluator</summary>
+        /// <param name="path">The path of the file</param>
+        public void WriteAutomata(string path)
+        {
+            Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitionsnew = new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>()
+            {
+                { new Tuple<string, List<int>, bool>("A", new List<int>(){ 1, 2, }, true), new Dictionary<string, List<int>>(){ { "LETRA", new List<int>(){ 1, 2, 3, } }, } },
+            };
+            string automata = "Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions ";
+            automata += "= new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>()\n\t\t\t{\n";
+            foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in Transitions)
+            {
+                automata += "\t\t\t\t{ new Tuple<string, List<int>, bool>(\"" + item.Key.Item1 + "\", new List<int>(){";
+                foreach (int number in item.Key.Item2)
+                {
+                    automata += " " + number + ",";
+                }
+
+                if (item.Key.Item3)
+                {
+                    automata += " }, true), new Dictionary<string, List<int>>(){";
+                }
+                else
+                {
+                    automata += " }, false), new Dictionary<string, List<int>>(){";
+                }
+
+                foreach (KeyValuePair<string, List<int>> element in item.Value)
+                {
+                    string elementWrite = element.Key;
+                    if (elementWrite[0].ToString().Equals("'") && elementWrite[elementWrite.Length - 1].ToString().Equals("'"))
+                    {
+                        elementWrite = elementWrite.Remove(0, 1);
+                        elementWrite = elementWrite.Remove(elementWrite.Length - 1, 1);
+                    }
+
+                    if (elementWrite.Equals("\""))
+                    {
+                        automata += " { @\"\"\"\", new List<int>(){";
+                    }
+                    else
+                    {
+                        automata += " { @\"" + elementWrite + "\", new List<int>(){";
+                    }
+
+                    foreach (int n in element.Value)
+                    {
+                        automata += " " + n + ",";
+                    }
+                    automata += " } },";
+                }
+                automata += " } },\n";
+            }
+            automata += "\t\t\t};\n";
+            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            fileText = fileText.Replace("/* MY AUTOMATA */", automata);
+            File.WriteAllText(path + "\\Evaluator.cs", fileText);
         }
 
         /// <summary>Write the list for the tokenization</summary>

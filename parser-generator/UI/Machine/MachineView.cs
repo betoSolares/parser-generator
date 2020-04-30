@@ -164,7 +164,7 @@ namespace parser_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void ShowCreator(object sender, EventArgs e)
         {
-            using (CreatorView creatorView = new CreatorView(_sets, _tokens))
+            using (CreatorView creatorView = new CreatorView(_sets, _tokens, regex.Transitions))
             {
                 creatorView.ShowDialog();
             }
