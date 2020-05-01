@@ -81,6 +81,64 @@ namespace Helpers
             File.WriteAllText(path + "\\Evaluator.cs", fileText);
         }
 
+        /// <summary>Write the evaluator</summary>
+        /// <param name="path">The path of the file</param>
+        public void WriteEvaluator(string path)
+        {
+            string code = string.Empty;
+            foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in Transitions)
+            {
+                code += "\t\t\t\t\t\tcase \"" + item.Key.Item1 + "\":\n\t\t\t\t\t\t\t";
+                if (item.Value.Count > 0)
+                {
+                    foreach (KeyValuePair<string, List<int>> element in item.Value)
+                    {
+                        code += "if (";
+                        string value = element.Key;
+                        if (sets.ContainsKey(value))
+                        {
+                            code += "SETS.ContainsKey(\"" + value + "\") && SETS[\"" + value + "\"].Contains(actual)";
+                        }
+                        else
+                        {
+                            value = value.Remove(value.Length - 1, 1).Remove(0, 1);
+                            code += "actual.Equals(@\"";
+                            if (value.Equals("\""))
+                            {
+                                code += "\"\"";
+                            }
+                            else
+                            {
+                                code += value;
+                            }
+                            code += "\")";
+                        }
+                        code += ")\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tList<int> newValues = state.Value[@\"";
+                        if (value.Equals("\""))
+                        {
+                            code += "\"\"";
+                        }
+                        else
+                        {
+                            code += value;
+                        }
+                        code += "\"];\n\t\t\t\t\t\t\t\tstate = Transitions.First(x => x.Key.Item2.SequenceEqual(newValues));\n";
+                        code += "\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse ";
+                    }
+                    code += "\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\terror = true;\n\t\t\t\t\t\t\t}\n";
+                }
+                else
+                {
+                    code += "if (i < text.Length - 1 || tokens.Count != 0)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t";
+                    code += "error = true;\n\t\t\t\t\t\t\t}\n";
+                }
+                code += "\t\t\t\t\t\t\tbreak;\n\n";
+            }
+            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            fileText = fileText.Replace("/* MY CODE */", code.Remove(0, 6));
+            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+        }
+
         /// <summary>Write the list for the tokenization</summary>
         /// <param name="path">The path of the file</param>
         public void WriteList(string path)

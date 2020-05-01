@@ -55,6 +55,7 @@ namespace parser_generator.UI
                     code.WriteList(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteSets(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteAutomata(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
+                    code.WriteEvaluator(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     message.Text = "Solution generated";
                     message.ForeColor = Color.White;
                 }
