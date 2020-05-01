@@ -25,7 +25,7 @@ namespace Helpers
         /// <summary>Write the transitions for the evaluator</summary>
         /// <param name="path">The path of the file</param>
         public void WriteAutomata(string path)
-        {
+         {
             Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitionsnew = new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>()
             {
                 { new Tuple<string, List<int>, bool>("A", new List<int>(){ 1, 2, }, true), new Dictionary<string, List<int>>(){ { "LETRA", new List<int>(){ 1, 2, 3, } }, } },
@@ -174,6 +174,102 @@ namespace Helpers
             string fileText = File.ReadAllText(path + "\\Tokenizer.cs");
             fileText = fileText.Replace("/* MY LIST */", code);
             File.WriteAllText(path + "\\Tokenizer.cs", fileText);
+        }
+
+        /// <summary>Write the list of the sets</summary>
+        /// <param name="path">The path of the file</param>
+        public void WriteSets(string path)
+        {
+            string text = string.Empty;
+            if (sets.Count > 0)
+            {
+                text = "Dictionary<string, List<string>> SETS = new Dictionary<string, List<string>>()\n\t\t\t{\n";
+                foreach (KeyValuePair<string, string> item in sets)
+                {
+                    text += "\t\t\t\t{ \"" + item.Key + "\", new List<string>(){";
+                    string[] elements = item.Value.Split('+');
+                    foreach (string subelement in elements)
+                    {
+                        string[] interval = subelement.Split(new string[] { ".." }, StringSplitOptions.None);
+                        if (interval.Length > 1)
+                        {
+                            double start;
+                            double finish;
+                            if (interval[0].Contains("CHR"))
+                            {
+                                start = int.Parse(interval[0].Remove(interval[0].Length - 1, 1).Remove(0, 4));
+                                finish = int.Parse(interval[1].Remove(interval[1].Length - 1, 1).Remove(0, 4));
+                            }
+                            else
+                            {
+                                start = interval[0].Remove(interval[0].Length - 1, 1).Remove(0, 1)[0];
+                                finish = interval[1].Remove(interval[1].Length - 1, 1).Remove(0, 1)[0];
+                            }
+
+                            for (int i = Convert.ToInt32(start); i <= Convert.ToInt32(finish); i++)
+                            {
+                                char character = Convert.ToChar(i);
+                                if (!string.IsNullOrEmpty(character.ToString()))
+                                {
+                                    text += " @\"";
+                                    if (character.Equals('\"'))
+                                    {
+                                        text += "\"\"";
+                                    }
+                                    else
+                                    {
+                                        text += character;
+                                    }
+                                    text += "\",";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (interval[0].Contains("CHR"))
+                            {
+                                int value = int.Parse(interval[0].Remove(interval[0].Length - 1, 1).Remove(0, 4));
+                                char character = Convert.ToChar(value);
+                                if (!string.IsNullOrEmpty(character.ToString()))
+                                {
+                                    text += " @\"";
+                                    if (character.Equals('\"'))
+                                    {
+                                        text += "\"\"";
+                                    }
+                                    else
+                                    {
+                                        text += character;
+                                    }
+                                    text += "\",";
+                                }
+                            }
+                            else
+                            {
+                                char character = interval[0].Remove(interval[0].Length - 1, 1).Remove(0, 1)[0];
+                                if (!string.IsNullOrEmpty(character.ToString()))
+                                {
+                                    text += " @\"";
+                                    if (character.Equals('\"'))
+                                    {
+                                        text += "\"\"";
+                                    }
+                                    else
+                                    {
+                                        text += character;
+                                    }
+                                    text += "\",";
+                                }
+                            }
+                        }
+                    }
+                    text += " } },\n";
+                }
+                text += "\t\t\t};\n";
+            }
+            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            fileText = fileText.Replace("/* MY SETS */", text);
+            File.WriteAllText(path + "\\Evaluator.cs", fileText);
         }
     }
 }

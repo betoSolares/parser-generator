@@ -53,6 +53,7 @@ namespace parser_generator.UI
                     Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text + "\\Solution");
                     Code code = new Code(_tokens, _sets, Transitions);
                     code.WriteList(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
+                    code.WriteSets(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteAutomata(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     message.Text = "Solution generated";
                     message.ForeColor = Color.White;
