@@ -11,15 +11,17 @@ namespace parser_generator.UI
     {
         private readonly Dictionary<string, string> _sets;
         private readonly Dictionary<string, string> _tokens;
+        private readonly Dictionary<string, string> _actions;
         private readonly Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions;
 
         /// <summary>Constructor</summary>
-        public CreatorView(Dictionary<string, string> sets, Dictionary<string, string> tokens,
+        public CreatorView(Dictionary<string, string> sets, Dictionary<string, string> tokens, Dictionary<string, string> actions,
                            Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> trans)
         {
             InitializeComponent();
             _sets = sets;
             _tokens = tokens;
+            _actions = actions;
             Transitions = trans;
         }
 
@@ -51,11 +53,12 @@ namespace parser_generator.UI
                 try
                 {
                     Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text + "\\Solution");
-                    Code code = new Code(_tokens, _sets, Transitions);
+                    Code code = new Code(_tokens, _sets, _actions, Transitions);
                     code.WriteList(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteSets(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteAutomata(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     code.WriteEvaluator(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
+                    code.WriteLexemas(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
                     message.Text = "Solution generated";
                     message.ForeColor = Color.White;
                 }

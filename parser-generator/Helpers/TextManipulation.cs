@@ -5,6 +5,21 @@ namespace Helpers
 {
     public class TextManipulation
     {
+        /// <summary>Get all the elements under the ACTIONS section</summary>
+        /// <param name="text">The text to parse</param>
+        /// <returns>A dictionary with all the actions</returns>
+        public Dictionary<string, string> GetActions(string text)
+        {
+            int indexFrom = text.IndexOf("ACTIONS") + "ACTIONS".Length;
+            int indexTo = text.LastIndexOf("ERROR");
+            string subtext = text.Substring(indexFrom, indexTo - indexFrom);
+            indexFrom = subtext.IndexOf("()") + "()".Length;
+            indexTo = subtext.LastIndexOf("}");
+            string result = subtext.Substring(indexFrom, indexTo - indexFrom);
+            string[] actions = result.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            return MakeDictionary(actions);
+        }
+
         /// <summary>Get all the elements under the SETS section</summary>
         /// <param name="text">The text to parse</param>
         /// <returns>A dictionary with all the SETS</returns>
@@ -44,7 +59,10 @@ namespace Helpers
                 if (!element.Equals(string.Empty) && !string.IsNullOrWhiteSpace(element))
                 {
                     string[] parts = element.Split(new[] { '=' }, 2);
-                    result.Add(parts[0].Trim(new[] { '\t', ' ' }), parts[1].Trim(new[] { '\t', ' ' }));
+                    if (parts.Length == 2)
+                    {
+                        result.Add(parts[0].Trim(new[] { '\t', ' ' }), parts[1].Trim(new[] { '\t', ' ' }));
+                    }
                 }
             }
             return result;

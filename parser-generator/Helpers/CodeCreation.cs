@@ -9,16 +9,18 @@ namespace Helpers
     {
         private readonly Dictionary<string, string> tokens;
         private readonly Dictionary<string, string> sets;
+        private readonly Dictionary<string, string> actions;
         private readonly Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions;
 
         /// <summary>Constructor</summary>
         /// <param name="t">The dictionary with the tokens</param>
         /// <param name="s">The dictionary with the sets</param>
-        public Code(Dictionary<string, string> t, Dictionary<string, string> s,
+        public Code(Dictionary<string, string> t, Dictionary<string, string> s, Dictionary<string, string> a,
                     Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> trans)
         {
             tokens = t;
             sets = s;
+            actions = a;
             Transitions = trans;
         }
 
@@ -123,7 +125,16 @@ namespace Helpers
                             code += value;
                         }
                         code += "\"];\n\t\t\t\t\t\t\t\tstate = Transitions.First(x => x.Key.Item2.SequenceEqual(newValues));\n";
-                        code += "\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse ";
+                        code += "\t\t\t\t\t\t\t\ttoken = @\"";
+                        if (value.Equals("\""))
+                        {
+                            code += "\"\"";
+                        }
+                        else
+                        {
+                            code += value;
+                        }
+                        code += "\";\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse ";
                     }
                     code += "\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\terror = true;\n\t\t\t\t\t\t\t}\n";
                 }
@@ -136,6 +147,107 @@ namespace Helpers
             }
             string fileText = File.ReadAllText(path + "\\Evaluator.cs");
             fileText = fileText.Replace("/* MY CODE */", code.Remove(0, 6));
+            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+        }
+
+        /// <summary>Write the lexemas</summary>
+        /// <param name="path">The path of the file</param>
+        public void WriteLexemas(string path)
+        {
+            string code = "List<Tuple<string, int>> lex = new List<Tuple<string, int>>()\n\t\t\t{\n";
+
+            foreach (KeyValuePair<string, string> element in tokens)
+            {
+                string value = element.Value;
+                string[] elements = value.Split(' ');
+                if (elements.Length == 1)
+                {
+                    string evaluating = elements[0];
+                    string part = elements[0];
+                    int cont = 0;
+                    bool insert = false;
+                    string text = string.Empty;
+                    List<string> opertors = new List<string>
+                    {
+                        "(",
+                        ")",
+                        "*",
+                        "+",
+                        "?",
+                        "·",
+                        "|"
+                    };
+                    while (cont < part.Length)
+                    {
+                        if (evaluating.Length >= 3 && evaluating[0].ToString().Equals("'")
+                            && evaluating[2].ToString().Equals("'"))
+                        {
+                            text += evaluating.Substring(1, 1);
+                            evaluating = evaluating.Remove(0, 3);
+                            cont += 3;
+                            insert = true;
+                        }
+                        else if (opertors.Contains(evaluating[0].ToString()))
+                        {
+                            text += evaluating[0];
+
+                            if (evaluating.Length >= 4 && evaluating[1].ToString().Equals("'")
+                            && evaluating[3].ToString().Equals("'"))
+                            {
+                                text += evaluating.Substring(2, 1);
+                                evaluating = evaluating.Remove(0, 4);
+                                cont += 4;
+                                insert = true;
+                            }
+                            else
+                            {
+                                cont = part.Length;
+                                value = text;
+                            }
+                        }
+                        else
+                        {
+                            cont = part.Length;
+                            text += " " + evaluating;
+                            value = text;
+                            insert = false;
+                        }
+                    }
+                    if (insert)
+                    {
+                        value = text;
+                    }
+                }
+                string number = element.Key.Remove(0, 6);
+                code += "\t\t\t\tnew Tuple<string, int>(@\"";
+                if (value.Equals("\""))
+                {
+                    code += "\"\"";
+                }
+                else
+                {
+                    code += value;
+                }
+                code += "\", " + number + "),\n";
+            }
+
+            foreach (KeyValuePair<string, string> element in actions)
+            {
+                string value = element.Value.Remove(element.Value.Length - 1, 1).Remove(0, 1);
+                code += "\t\t\t\tnew Tuple<string, int>(@\"";
+                if (value.Equals("\""))
+                {
+                    code += "\"\"";
+                }
+                else
+                {
+                    code += value;
+                }
+                code += "\", " + element.Key + "),\n";
+            }
+            code += "\t\t\t};\n";
+            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            fileText = fileText.Replace("/* MY LEXEMES */", code);
             File.WriteAllText(path + "\\Evaluator.cs", fileText);
         }
 

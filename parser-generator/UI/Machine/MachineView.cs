@@ -15,10 +15,11 @@ namespace parser_generator.UI
         private readonly Regex regex = null;
         private readonly Dictionary<string, string> _tokens;
         private readonly Dictionary<string, string> _sets;
+        private readonly Dictionary<string, string> _actions;
 
         /// <summary>Constructor</summary>
         /// <param name="tokens">The dictionary with the tokens</param>
-        public MachineView(Dictionary<string, string> tokens, Dictionary<string, string> sets)
+        public MachineView(Dictionary<string, string> tokens, Dictionary<string, string> sets, Dictionary<string, string> actions)
         {
             InitializeComponent();
             try
@@ -26,6 +27,7 @@ namespace parser_generator.UI
                 regex = new Regex(expression.MakeExpression(tokens));
                 _tokens = tokens;
                 _sets = sets;
+                _actions = actions;
             }
             catch (Exception ex)
             {
@@ -164,7 +166,7 @@ namespace parser_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void ShowCreator(object sender, EventArgs e)
         {
-            using (CreatorView creatorView = new CreatorView(_sets, _tokens, regex.Transitions))
+            using (CreatorView creatorView = new CreatorView(_sets, _tokens, _actions, regex.Transitions))
             {
                 creatorView.ShowDialog();
             }

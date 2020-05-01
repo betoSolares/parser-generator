@@ -123,7 +123,7 @@ namespace parser_generator.UI
         private void ChangeView(object sender, EventArgs e)
         {
             Hide();
-            using (MachineView machineView = new MachineView(textManipulation.GetTokens(text), textManipulation.GetSets(text)))
+            using (MachineView machineView = new MachineView(textManipulation.GetTokens(text), textManipulation.GetSets(text), textManipulation.GetActions(text)))
             {
                 machineView.ShowDialog();
             }
