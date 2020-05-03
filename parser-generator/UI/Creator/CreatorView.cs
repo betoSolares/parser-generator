@@ -1,8 +1,7 @@
-﻿using Helpers;
+﻿using SolutionGenerator;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace parser_generator.UI
@@ -15,7 +14,9 @@ namespace parser_generator.UI
         private readonly Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions;
 
         /// <summary>Constructor</summary>
-        public CreatorView(Dictionary<string, string> sets, Dictionary<string, string> tokens, Dictionary<string, string> actions,
+        public CreatorView(Dictionary<string, string> sets,
+                           Dictionary<string, string> tokens,
+                           Dictionary<string, string> actions,
                            Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> trans)
         {
             InitializeComponent();
@@ -52,13 +53,13 @@ namespace parser_generator.UI
             {
                 try
                 {
-                    Copy(Path.GetDirectoryName(Application.ExecutablePath) + "\\GENERIC_SOLUTION", file_path.Text + "\\Solution");
-                    Code code = new Code(_tokens, _sets, _actions, Transitions);
-                    code.WriteList(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
-                    code.WriteSets(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
-                    code.WriteAutomata(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
-                    code.WriteEvaluator(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
-                    code.WriteLexemas(file_path.Text + "\\Solution\\GENERIC_SOLUTION\\Helpers");
+                    Generator generator = new Generator(name.Text,
+                                                        file_path.Text,
+                                                        _tokens,
+                                                        _actions,
+                                                        _sets,
+                                                        Transitions);
+                    generator.GenerateSolution();
                     message.Text = "Solution generated";
                     message.ForeColor = Color.White;
                 }
@@ -67,34 +68,6 @@ namespace parser_generator.UI
                     message.Text = "An error ocurred: " + ex.Message;
                     message.ForeColor = Color.Maroon;
                 }
-            }
-        }
-
-        /// <summary>Copy ech file and subdirectory</summary>
-        /// <param name="source">The source directory path</param>
-        /// <param name="target">The target directory path</param>
-        private void Copy(string source, string target)
-        {
-            DirectoryInfo sourceDirectory = new DirectoryInfo(source);
-            DirectoryInfo targetDirectory = new DirectoryInfo(target);
-            CopyAll(sourceDirectory, targetDirectory);
-        }
-
-        /// <summary>Copy each file and subdirectory</summary>
-        /// <param name="source">The source directory</param>
-        /// <param name="target">The target directory</param>
-        private void CopyAll(DirectoryInfo source, DirectoryInfo target)
-        {
-            Directory.CreateDirectory(target.FullName);
-            foreach (FileInfo file in source.GetFiles())
-            {
-                file.CopyTo(Path.Combine(target.FullName, file.Name), true);
-            }
-            
-            foreach (DirectoryInfo sub in source.GetDirectories())
-            {
-                DirectoryInfo targetsub = target.CreateSubdirectory(sub.Name);
-                CopyAll(sub, targetsub);
             }
         }
     }

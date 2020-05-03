@@ -46,7 +46,9 @@ namespace Helpers
                                     regex = regex.Remove(regex.Length - 1, 1);
                                 }
 
-                                if (evaluating[0].Equals('*') || evaluating[0].Equals('+') || evaluating[0].Equals('?'))
+                                if (evaluating[0].Equals('*')
+                                    || evaluating[0].Equals('+')
+                                    || evaluating[0].Equals('?'))
                                 {
                                     regex += evaluating.Substring(0, 1) + "·";
                                 }

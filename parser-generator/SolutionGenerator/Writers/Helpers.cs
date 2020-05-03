@@ -3,35 +3,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Helpers
+namespace SolutionGenerator
 {
-    public class Code
+    public class Helpers
     {
-        private readonly Dictionary<string, string> tokens;
-        private readonly Dictionary<string, string> sets;
-        private readonly Dictionary<string, string> actions;
-        private readonly Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions;
-
-        /// <summary>Constructor</summary>
-        /// <param name="t">The dictionary with the tokens</param>
-        /// <param name="s">The dictionary with the sets</param>
-        public Code(Dictionary<string, string> t, Dictionary<string, string> s, Dictionary<string, string> a,
-                    Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> trans)
+        /// <summary>Write all the file</summary>
+        /// <param name="name">The name of the solution</param>
+        /// <param name="path">The path for the file</param>
+        /// <param name="tokens">The tokens of the text</param>
+        /// <param name="actions">The actions of the text</param>
+        /// <param name="sets">The sets of the text</param>
+        /// <param name="transitions">The state machine generated</param>
+        public void WriteFiles(string name,
+                               string path,
+                               Dictionary<string, string> tokens,
+                               Dictionary<string, string> actions,
+                               Dictionary<string, string> sets,
+                               Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> transitions)
         {
-            tokens = t;
-            sets = s;
-            actions = a;
-            Transitions = trans;
+            WriteTokenizer(name, path);
+            WriteList(path, tokens);
+            WriteEvaluator(name, path);
+            WriteSets(path, sets);
+            WriteAutomata(path, transitions);
+            WriteEvaluatorCode(path, sets, transitions);
+            WriteLexemas(path, tokens, actions);
         }
 
         /// <summary>Write the transitions for the evaluator</summary>
         /// <param name="path">The path of the file</param>
-        public void WriteAutomata(string path)
-         {
-            Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitionsnew = new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>()
-            {
-                { new Tuple<string, List<int>, bool>("A", new List<int>(){ 1, 2, }, true), new Dictionary<string, List<int>>(){ { "LETRA", new List<int>(){ 1, 2, 3, } }, } },
-            };
+        /// <param name="Transitions">The state machine generated</param>
+        public void WriteAutomata(string path,
+                                 Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions)
+        {
             string automata = "Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions ";
             automata += "= new Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>>()\n\t\t\t{\n";
             foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in Transitions)
@@ -54,7 +58,8 @@ namespace Helpers
                 foreach (KeyValuePair<string, List<int>> element in item.Value)
                 {
                     string elementWrite = element.Key;
-                    if (elementWrite[0].ToString().Equals("'") && elementWrite[elementWrite.Length - 1].ToString().Equals("'"))
+                    if (elementWrite[0].ToString().Equals("'") &&
+                        elementWrite[elementWrite.Length - 1].ToString().Equals("'"))
                     {
                         elementWrite = elementWrite.Remove(0, 1);
                         elementWrite = elementWrite.Remove(elementWrite.Length - 1, 1);
@@ -78,14 +83,105 @@ namespace Helpers
                 automata += " } },\n";
             }
             automata += "\t\t\t};\n";
-            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            string fileText = File.ReadAllText(Path.Combine(path, "Evaluator.cs"));
             fileText = fileText.Replace("/* MY AUTOMATA */", automata);
-            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+            File.WriteAllText(Path.Combine(path, "Evaluator.cs"), fileText);
+        }
+
+        /// <summary>Write the evaluator file</summary>
+        /// <param name="name">The name of the solution</param>
+        /// <param name="path">The path for the file</param>
+        private void WriteEvaluator(string name, string path)
+        {
+            string text = @"using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace " + name +@"
+{
+    public class Evaluator
+    {
+        private readonly List<Tuple<string, string>> lexemeTuple = new List<Tuple<string, string>>();
+        private readonly Queue<string> Tokens;
+
+        /// <summary>Constructor</summary>
+        /// <param name=""tokens"">The tokens to evaluate</param>
+        public Evaluator(Queue<string> tokens)
+        {
+            Tokens = tokens;
+        }
+
+        /// <summary>Evaluate the tokens using the automata</summary>
+        /// <param name=""tokens"">The queue with all the elements to evaluate</param>
+        /// <returns>True if the text is correct, otherwise false</returns>
+        public bool Evaluate()
+        {
+            /* MY SETS */
+            /* MY AUTOMATA */
+            bool error = false;
+            KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> state = Transitions.ElementAt(0);
+            Queue<string> tokens = new Queue<string>(Tokens);
+
+            while (tokens.Count > 0 && !error)
+            {
+                state = Transitions.ElementAt(0);
+                string token = string.Empty;
+                string text = tokens.Dequeue();
+                for (int i = 0; i < text.Length; i++)
+                {
+                    string actual = text[i].ToString();
+                    switch (state.Key.Item1)
+                    {
+                        /* MY CODE */
+                    }
+                }
+                lexemeTuple.Add(new Tuple<string, string>(text, token));
+            }
+
+            if (!error && state.Key.Item3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>Get all the lexemes and his token number</summary>
+        /// <returns>A list with all the lexemes and his token number</returns>
+        public List<Tuple<string, int>> GetLexemes()
+        {
+            /* MY LEXEMES */
+            List<Tuple<string, int>> lexemes = new List<Tuple<string, int>>();
+            foreach (string element in Tokens)
+            {
+                int number = 0;
+                try
+                {
+                    number = lex.First(x => x.Item1.Equals(element)).Item2;
+                }
+                catch
+                {
+                    string container = lexemeTuple.First(x => x.Item1.Equals(element)).Item2;
+                    number = lex.First(x => x.Item1.Contains(container)).Item2;
+                }
+                lexemes.Add(new Tuple<string, int>(element, number));
+            }
+            return lexemes;
+        }
+    }
+}
+";
+            File.WriteAllText(Path.Combine(path, "Evaluator.cs"), text);
         }
 
         /// <summary>Write the evaluator</summary>
         /// <param name="path">The path of the file</param>
-        public void WriteEvaluator(string path)
+        /// <param name="Transitions">The machine state generated</param>
+        public void WriteEvaluatorCode(string path,
+                                       Dictionary<string, string> sets,
+                                       Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions)
         {
             string code = string.Empty;
             foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in Transitions)
@@ -145,14 +241,16 @@ namespace Helpers
                 }
                 code += "\t\t\t\t\t\t\tbreak;\n\n";
             }
-            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            string fileText = File.ReadAllText(Path.Combine(path, "Evaluator.cs"));
             fileText = fileText.Replace("/* MY CODE */", code.Remove(0, 6));
-            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+            File.WriteAllText(Path.Combine(path, "Evaluator.cs"), fileText);
         }
 
         /// <summary>Write the lexemas</summary>
         /// <param name="path">The path of the file</param>
-        public void WriteLexemas(string path)
+        /// <param name="actions">The actions of the text</param>
+        /// <param name="tokens">The tokens of the text</param>
+        public void WriteLexemas(string path, Dictionary<string, string> tokens, Dictionary<string, string> actions)
         {
             string code = "List<Tuple<string, int>> lex = new List<Tuple<string, int>>()\n\t\t\t{\n";
 
@@ -246,14 +344,15 @@ namespace Helpers
                 code += "\", " + element.Key + "),\n";
             }
             code += "\t\t\t};\n";
-            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            string fileText = File.ReadAllText(Path.Combine(path, "Evaluator.cs"));
             fileText = fileText.Replace("/* MY LEXEMES */", code);
-            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+            File.WriteAllText(Path.Combine(path, "Evaluator.cs"), fileText);
         }
 
         /// <summary>Write the list for the tokenization</summary>
-        /// <param name="path">The path of the file</param>
-        public void WriteList(string path)
+        /// <param name="path">The path for the file</param>
+        /// <param name="tokens">The tokens of the text</param>
+        public void WriteList(string path, Dictionary<string, string> tokens)
         {
             List<string> list = new List<string>();
             foreach (KeyValuePair<string, string> token in tokens)
@@ -340,15 +439,16 @@ namespace Helpers
                     code += "\t\t\t@\"" + item + "\",\n";
                 }
             }
-            code += "\t\t};";
+            code += "\t\t};\n";
             string fileText = File.ReadAllText(path + "\\Tokenizer.cs");
             fileText = fileText.Replace("/* MY LIST */", code);
-            File.WriteAllText(path + "\\Tokenizer.cs", fileText);
+            File.WriteAllText(Path.Combine(path, "Tokenizer.cs"), fileText);
         }
 
         /// <summary>Write the list of the sets</summary>
         /// <param name="path">The path of the file</param>
-        public void WriteSets(string path)
+        /// <param name="sets">The sets of the text</param>
+        public void WriteSets(string path, Dictionary<string, string> sets)
         {
             string text = string.Empty;
             if (sets.Count > 0)
@@ -437,9 +537,87 @@ namespace Helpers
                 }
                 text += "\t\t\t};\n";
             }
-            string fileText = File.ReadAllText(path + "\\Evaluator.cs");
+            string fileText = File.ReadAllText(Path.Combine(path, "Evaluator.cs"));
             fileText = fileText.Replace("/* MY SETS */", text);
-            File.WriteAllText(path + "\\Evaluator.cs", fileText);
+            File.WriteAllText(Path.Combine(path, "Evaluator.cs"), fileText);
+        }
+
+        /// <summary>Write the tokenizer file</summary>
+        /// <param name="name">The name of the solution</param>
+        /// <param name="path">The path for the file</param>
+        private void WriteTokenizer(string name, string path)
+        {
+            string text = @"using System;
+using System.Collections.Generic;
+
+namespace " + name + @"
+{
+    public class Tokenizer
+    {
+        /// <summary>Special characters to parse</summary>
+        /* MY LIST */
+        /// <summary>Parse the text for evaluation</summary>
+        /// <param name=""text"">The text to parse</param>
+        /// <returns>A queue with all the tokens</returns>
+        public Queue<string> TokenizeText(string text)
+        {
+            Queue<string> tokens = new Queue<string>();
+            string[] elements = text.Split(new[] { ""\r\n"", ""\r"", ""\n"", ""\t"", "" "" }, StringSplitOptions.None);
+            foreach (string element in elements)
+            {
+                if (!string.IsNullOrWhiteSpace(element) && !string.IsNullOrEmpty(element))
+                {
+                    string find = characters.Find(x => element.Contains(x));
+                    if (string.IsNullOrEmpty(find))
+                    {
+                        tokens.Enqueue(element);
+                    }
+                    else
+                    {
+                        int index = element.IndexOf(find);
+                        string newElement = string.Empty;
+                        if (index == 0)
+                        {
+                            tokens.Enqueue(element.Substring(0, find.Length));
+                            newElement = element.Remove(0, find.Length);
+                        }
+                        else
+                        {
+                            tokens.Enqueue(element.Substring(0, index));
+                            newElement = element.Remove(0, index);
+                        }
+                        while (newElement.Length > 0)
+                        {
+                            find = characters.Find(x => newElement.Contains(x));
+                            if (string.IsNullOrEmpty(find))
+                            {
+                                tokens.Enqueue(newElement);
+                                newElement = string.Empty;
+                            }
+                            else
+                            {
+                                index = newElement.IndexOf(find);
+                                if (index == 0)
+                                {
+                                    tokens.Enqueue(newElement.Substring(0, find.Length));
+                                    newElement = newElement.Remove(0, find.Length);
+                                }
+                                else
+                                {
+                                    tokens.Enqueue(newElement.Substring(0, index));
+                                    newElement = newElement.Remove(0, index);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return tokens;
+        }
+    }
+}
+";
+            File.WriteAllText(Path.Combine(path, "Tokenizer.cs"), text);
         }
     }
 }

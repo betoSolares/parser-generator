@@ -11,7 +11,10 @@ namespace RegularExpression
         public Node Tree { get; private set; }
         public Dictionary<Tuple<int, string>, Tuple<List<int>[], bool>> FirstLastTable { get; private set; }
         public Dictionary<Tuple<int, string>, List<int>> FollowsTable { get; private set; }
-        public Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions { get; private set; }
+        public Dictionary<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> Transitions
+        {
+            get; private set;
+        }
 
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Utils utils = new Utils();
@@ -147,7 +150,8 @@ namespace RegularExpression
                                 S.Push(temp);
                             }
                         }
-                        else if (T.Count > 0 && !T.Peek().Equals("(") && utils.CheckPrecedence(token, T.Peek(), opertors))
+                        else if (T.Count > 0 && !T.Peek().Equals("(")
+                                 && utils.CheckPrecedence(token, T.Peek(), opertors))
                         {
                             if (S.Count >= 2)
                             {
@@ -320,7 +324,8 @@ namespace RegularExpression
                 {
                     if (node.Value.Equals("·"))
                     {
-                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier, node.LeftChild.Value);
+                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier,
+                                                                        node.LeftChild.Value);
                         Tuple<List<int>[], bool> c1 = FirstLastTable[key];
                         key = new Tuple<int, string>(node.RightChild.Identifier, node.RightChild.Value);
                         Tuple<List<int>[], bool> c2 = FirstLastTable[key];
@@ -332,7 +337,8 @@ namespace RegularExpression
                     }
                     else if (node.Value.Equals("*") || node.Value.Equals("+"))
                     {
-                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier, node.LeftChild.Value);
+                        Tuple<int, string> key = new Tuple<int, string>(node.LeftChild.Identifier,
+                                                                        node.LeftChild.Value);
                         Tuple<List<int>[], bool> c1 = FirstLastTable[key];
                         foreach (int last in c1.Item1[1])
                         {
@@ -386,7 +392,8 @@ namespace RegularExpression
                             && !pendingStates.Any(x => x.Item2.SequenceEqual(transitionValues)))
                         {
                             cont++;
-                            Tuple<string, List<int>> newState = new Tuple<string, List<int>>("State " + cont, transitionValues);
+                            Tuple<string, List<int>> newState = new Tuple<string, List<int>>("State " + cont,
+                                                                                             transitionValues);
                             pendingStates.Enqueue(newState);
                         }
                     }

@@ -13,21 +13,22 @@ namespace parser_generator.UI
         private readonly Expression expression = new Expression();
         private readonly Table table = new Table();
         private readonly Regex regex = null;
-        private readonly Dictionary<string, string> _tokens;
-        private readonly Dictionary<string, string> _sets;
-        private readonly Dictionary<string, string> _actions;
+        private readonly Dictionary<string, string> tokens;
+        private readonly Dictionary<string, string> sets;
+        private readonly Dictionary<string, string> actions;
 
         /// <summary>Constructor</summary>
         /// <param name="tokens">The dictionary with the tokens</param>
-        public MachineView(Dictionary<string, string> tokens, Dictionary<string, string> sets, Dictionary<string, string> actions)
+        public MachineView(Dictionary<string, string> tokens, Dictionary<string, string> sets,
+                           Dictionary<string, string> actions)
         {
             InitializeComponent();
             try
             {
                 regex = new Regex(expression.MakeExpression(tokens));
-                _tokens = tokens;
-                _sets = sets;
-                _actions = actions;
+                this.tokens = tokens;
+                this.sets = sets;
+                this.actions = actions;
             }
             catch (Exception ex)
             {
@@ -113,7 +114,8 @@ namespace parser_generator.UI
                 dataTable.Columns.Add(element);
             }
 
-            foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item in regex.Transitions)
+            foreach (KeyValuePair<Tuple<string, List<int>, bool>, Dictionary<string, List<int>>> item
+                     in regex.Transitions)
             {
                 object[] row = new object[terminals.Count + 2];
                 row[0] = item.Key.Item1 + " = {" + table.GetList(item.Key.Item2) + "}";
@@ -166,7 +168,7 @@ namespace parser_generator.UI
         /// <param name="e">Object that is being handled</param>
         private void ShowCreator(object sender, EventArgs e)
         {
-            using (CreatorView creatorView = new CreatorView(_sets, _tokens, _actions, regex.Transitions))
+            using (CreatorView creatorView = new CreatorView(sets, tokens, actions, regex.Transitions))
             {
                 creatorView.ShowDialog();
             }

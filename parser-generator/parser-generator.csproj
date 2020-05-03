@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CodeCreation.cs" />
     <Compile Include="Helpers\Expression.cs" />
     <Compile Include="Helpers\Syntactic.cs" />
     <Compile Include="Helpers\Table.cs" />
@@ -58,6 +57,12 @@
     <Compile Include="RegularExpression\Helpers\Utils.cs" />
     <Compile Include="RegularExpression\Node.cs" />
     <Compile Include="RegularExpression\Regex.cs" />
+    <Compile Include="SolutionGenerator\Generator.cs" />
+    <Compile Include="SolutionGenerator\Writers\Basic.cs" />
+    <Compile Include="SolutionGenerator\Writers\Helpers.cs" />
+    <Compile Include="SolutionGenerator\Writers\LexemeUI.cs" />
+    <Compile Include="SolutionGenerator\Writers\MainUI.cs" />
+    <Compile Include="SolutionGenerator\Writers\Properties.cs" />
     <Compile Include="UI\Creator\CreatorView.cs">
       <SubType>Form</SubType>
     </Compile>
