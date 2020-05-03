@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace parser_generator.UI
@@ -51,24 +52,95 @@ namespace parser_generator.UI
             }
             else
             {
-                try
+                if (VerifyName(name.Text))
                 {
-                    Generator generator = new Generator(name.Text,
-                                                        file_path.Text,
-                                                        _tokens,
-                                                        _actions,
-                                                        _sets,
-                                                        Transitions);
-                    generator.GenerateSolution();
-                    message.Text = "Solution generated";
+                    try
+                    {
+                        Generator generator = new Generator(name.Text,
+                                                            file_path.Text,
+                                                            _tokens,
+                                                            _actions,
+                                                            _sets,
+                                                            Transitions);
+                        generator.GenerateSolution();
+                        message.Text = "Solution generated";
+                        message.ForeColor = Color.White;
+                    }
+                    catch (Exception ex)
+                    {
+                        message.Text = "An error ocurred: " + ex.Message;
+                        message.ForeColor = Color.Maroon;
+                    }
+                }
+                else
+                {
+                    message.Text = "The name can only contain letters";
                     message.ForeColor = Color.White;
                 }
-                catch (Exception ex)
-                {
-                    message.Text = "An error ocurred: " + ex.Message;
-                    message.ForeColor = Color.Maroon;
-                }
             }
+        }
+
+        /// <summary>Check that the name is correct</summary>
+        /// <param name="name">The name to check</param>
+        /// <returns>True if the name is correct, otherwise false</returns>
+        private bool VerifyName(string name)
+        {
+            List<string> characters = new List<string>()
+            {
+                " ",
+                "!",
+                "\"",
+                "#",
+                "$",
+                "%",
+                "&",
+                "/",
+                "(",
+                ")",
+                "=",
+                "?",
+                "\\",
+                "¡",
+                "¿",
+                "¨",
+                "´",
+                "+",
+                "*",
+                "~",
+                "[",
+                "{",
+                "^",
+                "}",
+                "]",
+                "`",
+                "<",
+                "'",
+                ">",
+                "|",
+                "°",
+                "¬",
+                "ñ",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                ";",
+                ",",
+                ".",
+                ":",
+                "-",
+                "_",
+                "\t",
+                "\r",
+                "\n"
+            };
+            return !characters.Any(x => name.Contains(x));
         }
     }
 }
