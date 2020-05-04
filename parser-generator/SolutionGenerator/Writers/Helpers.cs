@@ -316,6 +316,22 @@ namespace " + name +@"
                         value = text;
                     }
                 }
+                else
+                {
+                    string text = string.Empty;
+                    foreach (char character in value)
+                    {
+                        if (character.Equals('"'))
+                        {
+                            text += "\"\"";
+                        }
+                        else
+                        {
+                            text += character;
+                        }
+                    }
+                    value = text;
+                }
                 string number = element.Key.Remove(0, 6);
                 code += "\t\t\t\tnew Tuple<string, int>(@\"";
                 if (value.Equals("\""))
