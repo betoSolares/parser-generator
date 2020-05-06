@@ -3,6 +3,7 @@ using RegularExpression;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace parser_generator.UI
@@ -78,30 +79,41 @@ namespace parser_generator.UI
                 if(regex != null)
                 {
                     // Lexical analysis
-                    if (regex.Evaluate(text))
+                    Task<bool> task = Task.Run(() => regex.Evaluate(text));
+                    if (task.Wait(TimeSpan.FromSeconds(10)))
                     {
-                        // Syntactic analysis
-                        try
+                        if (task.Result)
                         {
-                            if (syntactic.Validate(text))
+                            // Syntactic analysis
+                            try
                             {
-                                message.ForeColor = Color.White;
-                                message.Text = "The text is OK";
-                                message.Visible = true;
-                                machine_btn.Visible = true;
+                                if (syntactic.Validate(text))
+                                {
+                                    message.ForeColor = Color.White;
+                                    message.Text = "The text is OK";
+                                    message.Visible = true;
+                                    machine_btn.Visible = true;
+                                }
+                                else
+                                {
+                                    message.ForeColor = Color.White;
+                                    message.Text = "The text has some syntactic errors";
+                                    message.Visible = true;
+                                    machine_btn.Visible = false;
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
                                 message.ForeColor = Color.White;
-                                message.Text = "The text has some syntactic errors";
+                                message.Text = "Check that there are no repeated tokens or sets: " + ex.Message;
                                 message.Visible = true;
                                 machine_btn.Visible = false;
                             }
                         }
-                        catch (Exception ex)
+                        else
                         {
                             message.ForeColor = Color.White;
-                            message.Text = "Check that there are no repeated tokens or sets: " + ex.Message;
+                            message.Text = "The text has some lexical errors";
                             message.Visible = true;
                             machine_btn.Visible = false;
                         }
