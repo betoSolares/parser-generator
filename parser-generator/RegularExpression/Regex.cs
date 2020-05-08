@@ -387,15 +387,17 @@ namespace RegularExpression
                             values.Add(transitionWith, transitionValues);
                         }
                         values[transitionWith].Sort();
+                    }
+                }
 
-                        if (!Transitions.Any(x => x.Key.Item2.SequenceEqual(transitionValues))
-                            && !pendingStates.Any(x => x.Item2.SequenceEqual(transitionValues)))
-                        {
-                            cont++;
-                            Tuple<string, List<int>> newState = new Tuple<string, List<int>>("State " + cont,
-                                                                                             transitionValues);
-                            pendingStates.Enqueue(newState);
-                        }
+                foreach (KeyValuePair<string, List<int>> value in values)
+                {
+                    if (!Transitions.Any(x => x.Key.Item2.SequenceEqual(value.Value))
+                            && !pendingStates.Any(x => x.Item2.SequenceEqual(value.Value)))
+                    {
+                        cont++;
+                        Tuple<string, List<int>> newState = new Tuple<string, List<int>>("State " + cont, value.Value);
+                        pendingStates.Enqueue(newState);
                     }
                 }
 
