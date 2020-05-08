@@ -128,7 +128,14 @@ namespace " + name + @"
                 string text = tokens.Dequeue();
                 if (!state.Value.ContainsKey(text))
                 {
-                    if (!state.Value.ContainsKey(SETS.FirstOrDefault(x => x.Value.Contains(text)).Key))
+                    try
+                    {
+                        if (!state.Value.ContainsKey(SETS.FirstOrDefault(x => x.Value.Contains(text)).Key))
+                        {
+                            state = Transitions.ElementAt(0);
+                        }
+                    }
+                    catch
                     {
                         state = Transitions.ElementAt(0);
                     }
