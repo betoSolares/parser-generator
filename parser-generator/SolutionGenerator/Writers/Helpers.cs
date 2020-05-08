@@ -97,7 +97,7 @@ namespace SolutionGenerator
 using System.Collections.Generic;
 using System.Linq;
 
-namespace " + name +@"
+namespace " + name + @"
 {
     public class Evaluator
     {
@@ -124,9 +124,16 @@ namespace " + name +@"
 
             while (tokens.Count > 0 && !error)
             {
-                state = Transitions.ElementAt(0);
                 string token = string.Empty;
                 string text = tokens.Dequeue();
+                if (!state.Value.ContainsKey(text))
+                {
+                    if (!state.Value.ContainsKey(SETS.FirstOrDefault(x => x.Value.Contains(text)).Key))
+                    {
+                        state = Transitions.ElementAt(0);
+                    }
+                }
+
                 for (int i = 0; i < text.Length; i++)
                 {
                     string actual = text[i].ToString();
